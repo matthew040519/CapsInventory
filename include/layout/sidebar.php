@@ -58,7 +58,7 @@
                       <li class="collapsed-nav-item-title d-none">Transaction
                       </li>
                       <li class="nav-item"><a class="nav-link" href="quantity-management.php">
-                          <div class="d-flex align-items-center"><span class="nav-link-text">Quantity Management</span>
+                          <div class="d-flex align-items-center"><span class="nav-link-text">Stock Management</span>
                           </div>
                         </a>
                         <!-- more inner pages-->
@@ -68,6 +68,11 @@
                           </div>
                         </a>
                         <!-- more inner pages-->
+                      </li>
+                       <li class="nav-item"><a class="nav-link" href="loan-payments.php">
+                          <div class="d-flex align-items-center"><span class="nav-link-text">Loan Payments</span>
+                          </div>
+                        </a>
                       </li>
                        <li class="nav-item"><a class="nav-link" href="orders.php">
                           <div class="d-flex align-items-center"><span class="nav-link-text">Orders</span>

@@ -100,7 +100,7 @@ Login::requireLogin();
           </div>
           
           <div class="row g-5 gy-7">
-            <div class="col-12 col-xl-8 col-xxl-9">
+            <div class="col-12 col-xl-12 col-xxl-12">
               <div id="orderTable" data-list='{"valueNames":["products","discount","size","price","quantity","total"],"page":10}'>
                 <div class="table-responsive scrollbar">
                   <table class="table fs-9 mb-0 border-top border-translucent">
@@ -109,15 +109,18 @@ Login::requireLogin();
                         <th class="sort white-space-nowrap align-middle fs-10" scope="col"></th>
                         <th class="sort white-space-nowrap align-middle" scope="col" data-sort="products" style="width: 300px;">PRODUCTS</th>
                         <th class="sort align-middle text-end ps-4" scope="col" data-sort="price">PRICE</th>
+                        <th class="sort align-middle text-end ps-4" scope="col" data-sort="status">Status</th>
                         <th class="sort align-middle text-end ps-4" scope="col" data-sort="quantity">QUANTITY</th>
                         <th class="sort align-middle text-end ps-4" scope="col" data-sort="discount">DISCOUNT</th>
                         <th class="sort align-middle text-end ps-4" scope="col" data-sort="total">TOTAL</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody class="list" id="order-table-body">
                         <?php
             include('../Classes/DB.php');
             include('../Classes/ProductTransaction.php');
+            include('../Classes/Cart.php');
 
             $db = new DB();
             $conn = $db->connect();
@@ -129,9 +132,12 @@ Login::requireLogin();
 
             $result = $productTransaction->getCSTransactionById($_GET['id']);
             foreach ($result as $results) {
-                $total += $results['price'] * $results['quantity_out'];
+                if($results['voucher'] != 'LS'){
+                    $total += $results['price'] * $results['quantity_out'];
+                }
+                
                 $discount += $results['discount'];
-                $CustomerId = $results['CustomerId'];
+                // $CustomerId = $results['CustomerId'];
                 ?>
 
                       <tr class="hover-actions-trigger btn-reveal-trigger position-static">
@@ -144,18 +150,90 @@ Login::requireLogin();
                             <?php echo $results['product_name']; ?>
                         </td>
                         <td class="price align-middle text-end py-0 ps-4 text-body-tertiary"><?php echo number_format($results['price'], 2); ?></td>
+                        <td class="quantity align-middle text-end py-0 ps-4 text-body-tertiary"><?php echo $results['voucher'] == 'LS' ?  'Loaned' : ''; ?></td>
                         <td class="quantity align-middle text-end py-0 ps-4 text-body-tertiary"><?php echo $results['quantity_out']; ?></td>
                         <td class="discount align-middle text-end py-0 ps-4 text-body-tertiary"><?php echo number_format($results['discount'], 2); ?></td>
                         <td class="total align-middle fw-bold text-body-highlight text-end py-0 ps-4"><?php echo number_format($results['price'] * $results['quantity_out'], 2); ?></td>
+                        <td>
+                    
+                          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal<?php echo $results['id']; ?>">
+                          <i class="fas fa-trash-alt"></i>
+                          </button>
+
+                             <?php if ($results['voucher'] != 'LS') { ?>
+                              <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#moveToLoanModal<?php echo $results['id']; ?>">
+                                <i class="fas fa-arrows-turn-right"></i>
+                              </button>
+                            <?php } else { ?>
+                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#backToStockModal<?php echo $results['id']; ?>">
+                                <i class="fas fa-arrows-turn-right"></i>
+                              </button>
+                            <?php } ?>
+
+                             <div class="modal fade" id="backToStockModal<?php echo $results['id']; ?>" tabindex="-1" aria-labelledby="moveToLoanLabel<?php echo $results['id']; ?>" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="moveToLoanLabel<?php echo $results['id']; ?>">Retrieve Loan</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  Retrieve <strong><?php echo htmlspecialchars($results['product_name']); ?></strong> to loan? This action cannot be undone.
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                  <a href="move_to_loan.php?order_id=<?php echo $_GET['id']; ?>&item_id=<?php echo $results['id']; ?>&voucher=CS" class="btn btn-warning">Confirm</a>
+                                </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <div class="modal fade" id="moveToLoanModal<?php echo $results['id']; ?>" tabindex="-1" aria-labelledby="moveToLoanLabel<?php echo $results['id']; ?>" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="moveToLoanLabel<?php echo $results['id']; ?>">Move Item to Loan</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  Move <strong><?php echo htmlspecialchars($results['product_name']); ?></strong> to loan? This action cannot be undone.
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                  <a href="move_to_loan.php?order_id=<?php echo $_GET['id']; ?>&item_id=<?php echo $results['id']; ?>&voucher=LS" class="btn btn-warning">Confirm</a>
+                                </div>
+                                </div>
+                              </div>
+                            </div>
+                          <!-- Modal -->
+                          <div class="modal fade" id="confirmDeleteModal<?php echo $results['id']; ?>" tabindex="-1" aria-labelledby="confirmDeleteLabel<?php echo $results['id']; ?>" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="confirmDeleteLabel<?php echo $results['id']; ?>">Confirm Deletion</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              Are you sure you want to delete <strong><?php echo htmlspecialchars($results['product_name']); ?></strong> from this order?
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                              <a href="delete_order_item.php?order_id=<?php echo $_GET['id']; ?>&item_id=<?php echo $results['id']; ?>" class="btn btn-danger">Delete</a>
+                            </div>
+                            </div>
+                          </div>
+                          </div>
+                        </td>
                       </tr>
                       <?php } ?>
+                      <tr>
+                        <td><p class="text-body-emphasis fw-semibold lh-sm mb-0">Items subtotal :</p></td>
+                        <td class="text-end fw-bold" colspan="6">&#8369;<?php echo number_format($total, 2); ?></td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
-              </div>
-              <div class="d-flex flex-between-center py-3 border-bottom border-translucent mb-6">
-                <p class="text-body-emphasis fw-semibold lh-sm mb-0">Items subtotal :</p>
-                <p class="text-body-emphasis fw-bold lh-sm mb-0">&#8369;<?php echo number_format($total, 2); ?></p>
               </div>
               <?php
               
@@ -163,15 +241,24 @@ Login::requireLogin();
 
                 $db = new DB();
                 $customer = new Customer($db->connect());
+
+                $cart = new Cart($conn);
+                $cartItems = $cart->getTransactionItems($_GET['id']);
+
+                foreach ($cartItems as $item) {
+                    $CustomerId = $item['customer_id'];
+                    break; // Exit the loop after getting the first item
+                }
+
                 $customerDetails = $customer->getCustomerById($CustomerId);
 
                 echo '<pre>';
-                print_r($customerDetails['fullname']);
+                // print_r($customerDetails['fullname']);
                 echo '</pre>';
 
               ?>
-              <div class="row gx-4 gy-6 g-xl-7 justify-content-sm-center justify-content-xl-start">
-                <div class="col-12 col-sm-auto">
+              <div class="row mt-4">
+                <div class="col-6">
                   <h4 class="mb-5">Billing details</h4>
                   <div class="row g-4 flex-sm-column">
                     <div class="col-6 col-sm-12">
@@ -197,11 +284,7 @@ Login::requireLogin();
                     
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-12 col-xl-4 col-xxl-3">
-              <div class="row">
-                <div class="col-12">
+                <div class="col-6">
                   <div class="card mb-3">
                     <div class="card-body">
                       <h3 class="card-title mb-4">Summary</h3>
@@ -224,6 +307,11 @@ Login::requireLogin();
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div class="col-12 col-xl-4 col-xxl-3">
+              <div class="row">
+                
                 <!-- <div class="col-12">
                   <div class="card">
                     <div class="card-body">

@@ -16,7 +16,7 @@ require_once '../Classes/DB.php';
         $contact_number = $_POST['contact_number'];
 
         $customer = new Customer($conn);
-        if ($customer->createCustomer($fullname, $address, $gender, $contact_number)) {
+        if ($customer->createCustomer($fullname, $address, $contact_number, $gender)) {
             header('Location: ../admin/customer.php?success=Customer added successfully');
             exit();
         } else {

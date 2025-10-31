@@ -36,4 +36,14 @@
             $stmt->bind_param("iii", $status_id, $user_id, $order_id);
             return $stmt->execute();
         }
+
+        public function loanCheckoutOrder()
+        {
+            $stmt = $this->db->prepare("SELECT tblcustomer.fullname, tblloans.tdate, tblloans.id, tblloans.reference,
+            (SELECT SUM(credit) - SUM(debit) AS totalAmount from tblloans_details WHERE tblloans_details.reference=tblloans.reference) AS totalAmount
+            FROM tblloans INNER JOIN tblcustomer ON tblcustomer.id=tblloans.customer_id
+            HAVING totalAmount > 0");
+            $stmt->execute();
+            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        }
     }

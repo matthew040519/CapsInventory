@@ -25,4 +25,10 @@ Class Category {
         $stmt->bind_param("s", $name);
         return $stmt->execute();
     }
+
+    public function deleteCategory($id) {
+        $stmt = $this->db->prepare("UPDATE tblcategories SET active = 0 WHERE id = ?");
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    }
 }

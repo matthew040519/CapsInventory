@@ -275,7 +275,7 @@
                 </div>
               </div>
             </li>
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
               <a class="nav-link" id="navbarDropdownNindeDots" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" data-bs-auto-close="outside" aria-expanded="false">
                 <svg width="16" height="16" viewbox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <circle cx="2" cy="2" r="2" fill="currentColor"></circle>
@@ -339,7 +339,7 @@
                   </div>
                 </div>
               </div>
-            </li>
+            </li> -->
             <li class="nav-item dropdown"><a class="nav-link lh-1 pe-0" id="navbarDropdownUser" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                 <div class="avatar avatar-l ">
                   <img class="rounded-circle " src="assets/img/team/40x40/57.webp" alt="" />
@@ -351,35 +351,25 @@
                   <div class="card-body p-0">
                     <div class="text-center pt-4 pb-3">
                       <div class="avatar avatar-xl ">
-                        <img class="rounded-circle " src="assets/img/team/72x72/57.webp" alt="" />
+                        <img class="rounded-circle " src="../../assets/img/team/72x72/57.webp" alt="" />
                       </div>
                       <h6 class="mt-2 text-body-emphasis"><?php echo $_SESSION['email'] ?></h6>
                     </div>
                     <div class="mb-3 mx-3">
-                      <input class="form-control form-control-sm" id="statusUpdateInput" type="text" placeholder="Update your status" />
+                      <!-- <input class="form-control form-control-sm" id="statusUpdateInput" type="text" placeholder="Update your status" /> -->
                     </div>
                   </div>
-                  <div class="overflow-auto scrollbar" style="height: 10rem;">
-                    <ul class="nav d-flex flex-column mb-2 pb-1">
-                      <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="user"></span><span>Profile</span></a></li>
-                      <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"><span class="me-2 text-body align-bottom" data-feather="pie-chart"></span>Dashboard</a></li>
-                      <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="lock"></span>Posts &amp; Activity</a></li>
-                      <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="settings"></span>Settings &amp; Privacy </a></li>
-                      <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="help-circle"></span>Help Center</a></li>
-                      <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="globe"></span>Language</a></li>
-                    </ul>
-                  </div>
                   <div class="card-footer p-0 border-top border-translucent">
-                    <ul class="nav d-flex flex-column my-3">
+                    <!-- <ul class="nav d-flex flex-column my-3">
                       <li class="nav-item"><a class="nav-link px-3 d-block" href="#!"> <span class="me-2 text-body align-bottom" data-feather="user-plus"></span>Add another account</a></li>
-                    </ul>
-                    <hr />
-                    <div class="px-3">
+                    </ul> -->
+                    <!-- <hr /> -->
+                    <div class="px-3 mt-3 mb-3">
                       <a class="btn btn-phoenix-secondary d-flex flex-center w-100" href="../include/auth/logout.php">
                         <span class="me-2" data-feather="log-out"></span>Sign out
                       </a>
                     </div></div>
-                    <div class="my-2 text-center fw-bold fs-10 text-body-quaternary"><a class="text-body-quaternary me-1" href="#!">Privacy policy</a>&bull;<a class="text-body-quaternary mx-1" href="#!">Terms</a>&bull;<a class="text-body-quaternary ms-1" href="#!">Cookies</a></div>
+                    <!-- <div class="my-2 text-center fw-bold fs-10 text-body-quaternary"><a class="text-body-quaternary me-1" href="#!">Privacy policy</a>&bull;<a class="text-body-quaternary mx-1" href="#!">Terms</a>&bull;<a class="text-body-quaternary ms-1" href="#!">Cookies</a></div> -->
                   </div>
                 </div>
               </div>

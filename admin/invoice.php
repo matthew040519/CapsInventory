@@ -116,7 +116,30 @@ Login::requireLogin();
             <h2 class="mb-0">Invoice</h2>
             <div>
               <button class="btn btn-phoenix-secondary me-2"><span class="fa-solid fa-download me-sm-2"></span><span class="d-none d-sm-inline-block">Download Invoice</span></button>
-              <button class="btn btn-phoenix-secondary"><span class="fa-solid fa-print me-sm-2"></span><span class="d-none d-sm-inline-block">Print</span></button>
+                <button class="btn btn-phoenix-secondary" onclick="printInvoice()"><span class="fa-solid fa-print me-sm-2"></span><span class="d-none d-sm-inline-block">Print</span></button>
+                <script>
+                function printInvoice() {
+                  // Select the invoice section
+                  var invoiceContent = document.querySelector('.container-small').innerHTML;
+                  var printWindow = window.open('', '', 'height=800,width=900');
+                  printWindow.document.write('<html><head><title>Invoice</title>');
+                  // Optionally include styles
+                  printWindow.document.write('<link rel="stylesheet" href="../assets/css/theme.min.css" type="text/css" />');
+                  // Add custom style to collapse table when printing
+                  printWindow.document.write('<style>@media print { table, th, td { border-collapse: collapse !important; } .table-responsive { overflow: visible !important; } }</style>');
+                  printWindow.document.write('</head><body>');
+                  printWindow.document.write(invoiceContent); 
+                  printWindow.document.write('</body></html>');
+                  printWindow.document.close();
+                  printWindow.focus();
+                  // Remove print buttons from print window
+                  printWindow.onload = function() {
+                    var btns = printWindow.document.querySelectorAll('.btn');
+                    btns.forEach(function(btn){ btn.style.display = 'none'; });
+                    printWindow.print();
+                  };
+                }
+                </script>
             </div>
           </div>
           <div class="bg-body dark__bg-gray-1100 p-4 mb-4 rounded-2">
@@ -204,7 +227,7 @@ Login::requireLogin();
                     
                     <th class="text-end" scope="col" style="width: 138px;"></th>
                     <th class="text-center" scope="col" style="width: 80px;"></th>
-                    <th class="text-end" scope="col" style="min-width: 92px;"></th>
+                    <th class="text-end" scope="col" style="min-width: 92px;">Status</th>
                     <th class="text-end" scope="col" style="width: 80px;">Quantity</th>
                     <th class="text-end" scope="col" style="width: 100px;">Price</th>
                     <th class="text-end" scope="col" style="min-width: 60px;">Total</th>
@@ -216,7 +239,7 @@ Login::requireLogin();
                     $total = 0;
                     $discount = 0;
                         foreach ($transaction as $index => $item) {
-                            $total += $item['price'] * $item['quantity_out'];
+                            $total += $item['voucher'] == 'LS' ? 0 : $item['price'] * $item['quantity_out'];
                             $discount += $item['discount'];
                     ?>
                   <tr>
@@ -229,10 +252,10 @@ Login::requireLogin();
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td class="align-middle text-end ps-5"><?php echo $item['voucher'] == 'LS' ? 'Loaned' : ''; ?></td>
                     <td class="align-middle ps-5"><?php echo $item['quantity_out']; ?></td>
                     <td class="align-middle text-end text-body-highlight fw-semibold"><?php echo $item['price']; ?></td>
-                    <td class="align-middle text-end text-body-highlight fw-semibold"><?php echo number_format($item['price'] * $item['quantity_out'], 2); ?></td>
+                    <td class="align-middle text-end text-body-highlight fw-semibold"><?php echo $item['voucher'] == 'LS' ? 0 : number_format($item['price'] * $item['quantity_out'], 2); ?></td>
                     
                   </tr>
                   <?php } ?>

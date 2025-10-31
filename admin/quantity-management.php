@@ -83,9 +83,9 @@ Login::requireLogin();
       <div class="content">
         <div class="row gy-3 mb-6 justify-content-between">
           <div class="col-md-9 col-auto">
-            <h2 class="mb-2 text-body-emphasis">Quality Management</h2>
+            <h2 class="mb-2 text-body-emphasis">Stock Management</h2>
             <p class="text-body-tertiary fw-semibold">
-              Quality Management involves overseeing all activities and tasks needed to maintain a desired level of excellence. This includes determining a quality policy, creating and implementing quality planning and assurance, and quality control and improvement.
+              Stock Management involves overseeing all activities and tasks needed to maintain a desired level of inventory. This includes determining stock policies, creating and implementing stock planning and assurance, and stock control and improvement.
             </p>
           </div>
         </div>
@@ -100,7 +100,7 @@ Login::requireLogin();
                                 <form action="../include/product_transaction.php" enctype="multipart/form-data" method="POST">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="productModalLabel">Create New Product</h5>
+                                            <h5 class="modal-title" id="productModalLabel">Create Stock</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -163,7 +163,7 @@ Login::requireLogin();
                             <div class="col d-flex justify-content-between align-items-center">
                                 <div>
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addProductModal">
-                                        <i class="uil uil-plus"></i> Add Quantity
+                                        <i class="uil uil-plus"></i> Add Stock
                                     </button>
                                 </div>
                                 <div>

@@ -84,8 +84,8 @@ Login::requireLogin();
         <div class="mb-9">
           <div class="row g-3 mb-4">
             <div class="col-auto">
-              <h2 class="mb-0">Orders</h2>
-              <p class="text-body-tertiary">Below is a list of recent orders, including order number, total amount, customer details, payment status, fulfilment status, delivery type, and date. Use the filters and search to find specific orders.</p>
+              <h2 class="mb-0">Loan Payments</h2>
+            <p class="text-body-tertiary">Below is a list of recent loan payments, including order number, total amount, customer details, payment status, fulfilment status, delivery type, and date. Use the filters and search to find specific loan payments.</p>
             </div>
           </div>
           <!-- <ul class="nav nav-links mb-3 mb-lg-2 mx-n3">
@@ -124,10 +124,9 @@ Login::requireLogin();
                       <!-- <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">ORDER</th> -->
                       
                       <th class="sort align-middle ps-8" scope="col" data-sort="customer">CUSTOMER</th>
-                      <th class="sort align-middle pe-3" scope="col" data-sort="payment_status">PAYMENT STATUS</th>
-                      <!-- <th class="sort align-middle text-start pe-3" scope="col" data-sort="fulfilment_status" style="width:12%; min-width: 200px;">FULFILMENT STATUS</th>
-                      <th class="sort align-middle text-start" scope="col" data-sort="delivery_type" style="width:30%;">DELIVERY TYPE</th> -->
+                      <th class="sort align-middle pe-0" scope="col" data-sort="reference">Reference</th>
                       <th class="sort align-middle pe-0" scope="col" data-sort="date">DATE</th>
+                      <th class="sort align-middle pe-0" scope="col" data-sort="amount">Balance</th>
                       <th class="sort align-middle" scope="col"></th>
                     </tr>
                   </thead>
@@ -139,48 +138,24 @@ Login::requireLogin();
 
                     $db = new DB();
                     $order = new Order($db->connect());
-                    $orders = $order->getAllOrders();
+                    $orders = $order->loanCheckoutOrder();
                     foreach ($orders as $order) {
                     ?>
+                    <!-- <?php print_r($order); ?> -->
                     <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                      <!-- <td class="fs-9 align-middle px-0 py-3">
-                        <div class="form-check mb-0 fs-8">
-                          <input class="form-check-input" type="checkbox" data-bulk-select-row='{"order":2453,"total":87,"customer":{"avatar":"/team/32.webp","name":"Carry Anna"},"payment_status":{"label":"Complete","type":"badge-phoenix-success","icon":"check"},"fulfilment_status":{"label":"Cancelled","type":"badge-phoenix-secondary","icon":"x"},"delivery_type":"Cash on delivery","date":"Dec 12, 12:56 PM"}' />
-                        </div>
-                      </td> -->
-                      <!-- <td class="order align-middle white-space-nowrap py-0"><a class="fw-semibold" href="#!">#</a></td> -->
-                     
                       <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-body" href="../../../apps/e-commerce/landing/profile.html">
                           <!-- <div class="avatar avatar-m">
                             <img class="rounded-circle" src="../../../assets/img/team/32.webp" alt="" />
                           </div> -->
                           <h6 class="mb-0 text-body"><?php echo $order['fullname']; ?></h6>
                         </a></td>
-                      <td class="payment_status align-middle white-space-nowrap text-start fw-bold text-body-tertiary">
-                        <?php if ($order['StatusId'] === 1): ?>
-                            <span class="badge badge-phoenix fs-10 badge-phoenix-warning">
-                                <span class="badge-label"><?php echo $order['status_name']; ?></span>
-                                <span class="ms-1" data-feather="clock" style="height:12.8px;width:12.8px;"></span>
-                            </span>
-                        <?php else: ?>
-                            <span class="badge badge-phoenix fs-10 badge-phoenix-success">
-                                <span class="badge-label"><?php echo $order['status_name']; ?></span>
-                                <span class="ms-1" data-feather="check" style="height:12.8px;width:12.8px;"></span>
-                            </span>
-                        <?php endif; ?>
-                      </td>
-                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['date']; ?></td>
+                         <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['reference']; ?></td>
+                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['tdate']; ?></td>
+                      <td class="amount align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($order['totalAmount'], 2); ?></td>
                         <td class="align-middle">
-                        <?php if ($order['StatusId'] === 1): ?>
-                            <a href="order_view.php?id=<?php echo $order['OrderId']; ?>" class="btn btn-sm btn-primary">
+                            <a href="loan_details.php?id=<?php echo $order['id']; ?>&reference=<?php echo $order['reference']; ?>" class="btn btn-sm btn-primary">
                                 View
                             </a>
-                        <?php else: ?>
-                            <span class="badge badge-phoenix fs-10 badge-phoenix-success">
-                                <span class="badge-label">Paid</span>
-                                <span class="ms-1" data-feather="check" style="height:12.8px;width:12.8px;"></span>
-                            </span>
-                        <?php endif; ?>
                         </td>
                     </tr>
                     <?php } ?>

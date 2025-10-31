@@ -84,8 +84,8 @@ Login::requireLogin();
         <div class="mb-9">
           <div class="row g-3 mb-4">
             <div class="col-auto">
-              <h2 class="mb-0">Orders</h2>
-              <p class="text-body-tertiary">Below is a list of recent orders, including order number, total amount, customer details, payment status, fulfilment status, delivery type, and date. Use the filters and search to find specific orders.</p>
+              <h2 class="mb-0">Loan Details</h2>
+            <p class="text-body-tertiary">Below is a list of recent loan details, including order number, total amount, customer details, payment status, fulfilment status, delivery type, and date. Use the filters and search to find specific loan details.</p>
             </div>
           </div>
           <!-- <ul class="nav nav-links mb-3 mb-lg-2 mx-n3">
@@ -98,17 +98,78 @@ Login::requireLogin();
           </ul> -->
           <div id="orderTable" data-list='{"valueNames":["order","total","customer","payment_status","fulfilment_status","delivery_type","date"],"page":10,"pagination":true}'>
             <div class="mb-4">
-              <div class="row g-3">
+              <div class="row g-3 justify-content-between align-items-center">
+                <div class="col-auto">
+                  <!-- Pay Loan Button -->
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loanPaymentModal">
+                    Pay Loan
+                  </button>
+                </div>
                 <div class="col-auto">
                   <div class="search-box">
                     <form class="position-relative">
                       <input class="form-control search-input search" type="search" placeholder="Search orders" aria-label="Search" />
                       <span class="fas fa-search search-box-icon"></span>
-
                     </form>
                   </div>
                 </div>
-                
+              </div>
+
+              <?php
+
+                include('../Classes/DB.php');
+include('../Classes/Loan.php');
+                    
+                    $db = new DB();
+                $loan = new Loan($db->connect());
+              ?>
+
+              <!-- Loan Payment Modal -->
+              <div class="modal fade" id="loanPaymentModal" tabindex="-1" aria-labelledby="loanPaymentModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <form method="post" action="pay_loan.php">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="loanPaymentModalLabel">Loan Payment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <input type="hidden" name="reference" value="<?php echo $_GET['reference']; ?>">
+                        <div class="mb-3">
+                          <label for="loanAmount" class="form-label">Amount</label>
+
+                              <?php
+                                // Get the max balance for the reference
+                                $loanByRef = $loan->getLoanByReference($_GET['reference']);
+                                $maxBalance = isset($loanByRef['balance']) ? $loanByRef['balance'] : 0;
+                              ?>
+                              <input type="number" class="form-control" id="loanAmount" name="amount" max="<?php echo $maxBalance; ?>" required>
+
+                        </div>
+                        <?php
+                                // Get the max balance for the reference
+                                $loanByRef = $loan->getLoanByReference($_GET['reference']);
+                                $customer_id = isset($loanByRef['customer_id']) ? $loanByRef['customer_id'] : 0;
+                              ?>
+                        <input type="hidden" value="<?php echo $customer_id; ?>" name="customer_id">
+                        <div class="mb-3">
+                          <label for="loanAmount" class="form-label">Balance</label>
+
+                              <?php
+                                // Get the max balance for the reference
+                                $loanByRef = $loan->getLoanByReference($_GET['reference']);
+                                $maxBalance = isset($loanByRef['balance']) ? $loanByRef['balance'] : 0;
+                              ?>
+                              <input type="number" class="form-control" id="loanAmount" readonly value="<?php echo $maxBalance; ?>" required>
+
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit Payment</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
@@ -123,65 +184,30 @@ Login::requireLogin();
                       </th> -->
                       <!-- <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">ORDER</th> -->
                       
-                      <th class="sort align-middle ps-8" scope="col" data-sort="customer">CUSTOMER</th>
-                      <th class="sort align-middle pe-3" scope="col" data-sort="payment_status">PAYMENT STATUS</th>
-                      <!-- <th class="sort align-middle text-start pe-3" scope="col" data-sort="fulfilment_status" style="width:12%; min-width: 200px;">FULFILMENT STATUS</th>
-                      <th class="sort align-middle text-start" scope="col" data-sort="delivery_type" style="width:30%;">DELIVERY TYPE</th> -->
-                      <th class="sort align-middle pe-0" scope="col" data-sort="date">DATE</th>
-                      <th class="sort align-middle" scope="col"></th>
+                      <th class="sort align-middle ps-8" scope="col" data-sort="customer">Reference</th>
+                      <th class="sort align-middle pe-0" scope="col" data-sort="date">Credit</th>
+                      <th class="sort align-middle pe-0" scope="col" data-sort="amount">Debit</th>
+                      <th class="sort align-middle" scope="col" data-sort="date">Date</th>
                     </tr>
                   </thead>
                   <tbody class="list" id="order-table-body">
                     <?php 
-                    // Include database and object files    
-                    include('../Classes/DB.php');
-                    include('../Classes/Order.php');
-
-                    $db = new DB();
-                    $order = new Order($db->connect());
-                    $orders = $order->getAllOrders();
-                    foreach ($orders as $order) {
+                    // Include database and object files 
+                    // include('../Classes/Loan.php');
+                    $loan = new Loan($db->connect());
+                    $loans = $loan->getLoanDetails($_GET['reference']);
+                    foreach ($loans as $loan) {
                     ?>
                     <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                      <!-- <td class="fs-9 align-middle px-0 py-3">
-                        <div class="form-check mb-0 fs-8">
-                          <input class="form-check-input" type="checkbox" data-bulk-select-row='{"order":2453,"total":87,"customer":{"avatar":"/team/32.webp","name":"Carry Anna"},"payment_status":{"label":"Complete","type":"badge-phoenix-success","icon":"check"},"fulfilment_status":{"label":"Cancelled","type":"badge-phoenix-secondary","icon":"x"},"delivery_type":"Cash on delivery","date":"Dec 12, 12:56 PM"}' />
-                        </div>
-                      </td> -->
-                      <!-- <td class="order align-middle white-space-nowrap py-0"><a class="fw-semibold" href="#!">#</a></td> -->
-                     
                       <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-body" href="../../../apps/e-commerce/landing/profile.html">
                           <!-- <div class="avatar avatar-m">
                             <img class="rounded-circle" src="../../../assets/img/team/32.webp" alt="" />
                           </div> -->
-                          <h6 class="mb-0 text-body"><?php echo $order['fullname']; ?></h6>
+                          <h6 class="mb-0 text-body"><?php echo $loan['reference']; ?></h6>
                         </a></td>
-                      <td class="payment_status align-middle white-space-nowrap text-start fw-bold text-body-tertiary">
-                        <?php if ($order['StatusId'] === 1): ?>
-                            <span class="badge badge-phoenix fs-10 badge-phoenix-warning">
-                                <span class="badge-label"><?php echo $order['status_name']; ?></span>
-                                <span class="ms-1" data-feather="clock" style="height:12.8px;width:12.8px;"></span>
-                            </span>
-                        <?php else: ?>
-                            <span class="badge badge-phoenix fs-10 badge-phoenix-success">
-                                <span class="badge-label"><?php echo $order['status_name']; ?></span>
-                                <span class="ms-1" data-feather="check" style="height:12.8px;width:12.8px;"></span>
-                            </span>
-                        <?php endif; ?>
-                      </td>
-                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['date']; ?></td>
-                        <td class="align-middle">
-                        <?php if ($order['StatusId'] === 1): ?>
-                            <a href="order_view.php?id=<?php echo $order['OrderId']; ?>" class="btn btn-sm btn-primary">
-                                View
-                            </a>
-                        <?php else: ?>
-                            <span class="badge badge-phoenix fs-10 badge-phoenix-success">
-                                <span class="badge-label">Paid</span>
-                                <span class="ms-1" data-feather="check" style="height:12.8px;width:12.8px;"></span>
-                            </span>
-                        <?php endif; ?>
-                        </td>
+                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($loan['credit'], 2); ?></td>
+                      <td class="amount align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($loan['debit'], 2); ?></td>
+                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $loan['tdate']; ?></td>
                     </tr>
                     <?php } ?>
                   </tbody>

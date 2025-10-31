@@ -157,7 +157,62 @@ Login::requireLogin();
                               <tr>
                                 <td class="align-middle ps-3 id"><?php echo $category['id']; ?></td>
                                 <td class="align-middle category_name"><?php echo $category['category_name']; ?></td>
-                                <td class="align-middle age"></td>
+                                <td class="align-middle">
+                                  <!-- Edit Button -->
+                                  <button type="button" class="btn btn-sm btn-success me-1" data-bs-toggle="modal" data-bs-target="#editCategoryModal<?php echo $category['id']; ?>">
+                                    <i class="uil uil-edit"></i>
+                                  </button>
+                                  <!-- Delete Button -->
+                                    <!-- Delete Button triggers modal -->
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal<?php echo $category['id']; ?>">
+                                    <i class="uil uil-trash"></i>
+                                    </button>
+                                    <!-- Delete Confirmation Modal -->
+                                    <div class="modal fade" id="deleteCategoryModal<?php echo $category['id']; ?>" tabindex="-1" aria-labelledby="deleteCategoryModalLabel<?php echo $category['id']; ?>" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteCategoryModalLabel<?php echo $category['id']; ?>">Delete Category</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        Are you sure you want to delete the category "<strong><?php echo htmlspecialchars($category['category_name']); ?></strong>"?
+                                      </div>
+                                      <div class="modal-footer">
+                                        <!-- <form action="../include/delete_category.php" method="POST" class="d-inline">
+                                        <input type="hidden" name="id" value="<?php echo $category['id']; ?>">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form> -->
+                                        <a href="../include/delete_category.php?id=<?php echo $category['id']; ?>" class="btn btn-danger">Delete</a>
+                                      </div>
+                                      </div>
+                                    </div>
+                                    </div>
+                                  <!-- Edit Modal -->
+                                  <div class="modal fade" id="editCategoryModal<?php echo $category['id']; ?>" tabindex="-1" aria-labelledby="editCategoryModalLabel<?php echo $category['id']; ?>" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                      <form action="../include/category.php" method="POST">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="editCategoryModalLabel<?php echo $category['id']; ?>">Edit Category</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <input type="hidden" name="edit_category_id" value="<?php echo $category['id']; ?>">
+                                            <div class="mb-3">
+                                              <label for="edit_category_name<?php echo $category['id']; ?>" class="form-label">Name</label>
+                                              <input type="text" class="form-control" id="edit_category_name<?php echo $category['id']; ?>" name="edit_category_name" value="<?php echo htmlspecialchars($category['category_name']); ?>" required>
+                                            </div>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Update</button>
+                                          </div>
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </td>
                               </tr>
                             <?php } ?>
                             </tbody>

@@ -42,7 +42,7 @@
                                             </div>
                                             <div class="mb-2">
                                                 <strong>Qty:</strong>
-                                                <input type="text" class="form-control" id="quantity<?php echo $product['id']; ?>" name="quantity" value="1">
+                                                <input type="number" class="form-control" id="quantity<?php echo $product['id']; ?>" max="<?php echo $product['total_quantity']; ?>" name="quantity" value="1">
                                             </div>
                                             <div class="mb-2">
                                                 <strong>Date:</strong>

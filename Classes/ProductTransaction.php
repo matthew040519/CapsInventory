@@ -90,7 +90,7 @@ ORDER BY DATE DESC";
 
         public function getCSTransactionById($id)
         {
-            $query = "SELECT tblproduct_transactions.id, tblcustomer.id as CustomerId, discount, tblproducts.image, tblproducts.product_name, tblproducts.price, tblproduct_transactions.quantity_out 
+            $query = "SELECT tblproduct_transactions.id, tblproduct_transactions.voucher, tblcustomer.id as CustomerId, discount, tblproducts.image, tblproducts.product_name, tblproducts.price, tblproduct_transactions.quantity_out 
 FROM tblproduct_transactions
 JOIN tblproducts ON tblproducts.id=tblproduct_transactions.product_id
 JOIN tblcart ON tblcart.id=tblproduct_transactions.cart_id
@@ -118,6 +118,7 @@ FROM tblproduct_transactions
 JOIN tblproducts ON tblproducts.id=tblproduct_transactions.product_id
 JOIN tblcart ON tblcart.id=tblproduct_transactions.cart_id
 JOIN tblcustomer ON tblcustomer.id=tblcart.customer_id
+WHERE tblproduct_transactions.voucher = 'CS'
 ORDER BY tblproduct_transactions.date DESC";
             $stmt = $this->conn->prepare($query);
             $stmt->execute();
@@ -145,5 +146,19 @@ HAVING inventory < p.reorder_point";
             $stmt->execute();
             return $stmt->get_result();
     
+        }
+
+        public function deleteTransaction($id) {
+            $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("i", $id);
+            return $stmt->execute();
+        }
+
+        public function  moveToLoan($id, $voucher) {
+            $query = "UPDATE " . $this->table_name . " SET voucher = ? WHERE id = ?";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("si", $voucher, $id);
+            return $stmt->execute();
         }
     }
