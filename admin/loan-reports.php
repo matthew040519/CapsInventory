@@ -84,8 +84,8 @@ Login::requireLogin();
         <div class="mb-9">
           <div class="row g-3 mb-4">
             <div class="col-auto">
-              <h2 class="mb-0">Loan Payments</h2>
-            <p class="text-body-tertiary">Below is a list of recent loan payments, including order number, total amount, customer details, payment status, fulfilment status, delivery type, and date. Use the filters and search to find specific loan payments.</p>
+              <h2 class="mb-0">Loan Reports</h2>
+            <!-- <p class="text-body-tertiary">Below is a list of recent loan reports, including order number, total amount, customer details, payment status, fulfilment status, delivery type, and date. Use the filters and search to find specific loan reports.</p> -->
             </div>
           </div>
           <!-- <ul class="nav nav-links mb-3 mb-lg-2 mx-n3">
@@ -122,25 +122,25 @@ Login::requireLogin();
                         </div>
                       </th> -->
                       <!-- <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">ORDER</th> -->
-                      
+                      <th class="sort align-middle ps-8" scope="col" data-sort="id">Loan ID</th>
                       <th class="sort align-middle ps-8" scope="col" data-sort="customer">CUSTOMER</th>
                       <th class="sort align-middle pe-0" scope="col" data-sort="reference">Reference</th>
                       <th class="sort align-middle pe-0" scope="col" data-sort="date">DATE</th>
                       <th class="sort align-middle pe-0" scope="col" data-sort="amount">Balance</th>
-                      <th class="sort align-middle" scope="col"></th>
                     </tr>
                   </thead>
                   <tbody class="list" id="order-table-body">
                     <?php 
-                    // Include database and object files  
+                    // Include database and object files    
                     include('../Classes/Order.php');
 
                     $order = new Order($db->connect());
-                    $orders = $order->loanCheckoutOrder();
+                    $orders = $order->loanCheckoutOrderReturnALl();
                     foreach ($orders as $order) {
                     ?>
                     <!-- <?php print_r($order); ?> -->
                     <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['LoanId']; ?></td>
                       <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-body" href="../../../apps/e-commerce/landing/profile.html">
                           <!-- <div class="avatar avatar-m">
                             <img class="rounded-circle" src="../../../assets/img/team/32.webp" alt="" />
@@ -150,11 +150,7 @@ Login::requireLogin();
                          <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['reference']; ?></td>
                       <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['tdate']; ?></td>
                       <td class="amount align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($order['totalAmount'], 2); ?></td>
-                        <td class="align-middle">
-                            <a href="loan_details.php?id=<?php echo $order['id']; ?>&reference=<?php echo $order['reference']; ?>" class="btn btn-sm btn-primary">
-                                View
-                            </a>
-                        </td>
+                    
                     </tr>
                     <?php } ?>
                   </tbody>

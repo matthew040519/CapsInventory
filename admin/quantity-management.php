@@ -110,10 +110,8 @@ Login::requireLogin();
                                                 <select name="product_id" id="" class="form-select" required>
                                                     <option value="" disabled selected>Select Product</option>
                                                     <?php
-                                                    include('../Classes/DB.php');
                                                     include('../Classes/Product.php');
 
-                                                    $db = new DB();
                                                     $product = new Product($db->connect());
                                                     $categories = $product->getAllProducts();
                                                     foreach ($categories as $category) {

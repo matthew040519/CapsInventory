@@ -111,6 +111,12 @@
                         </a>
                         <!-- more inner pages-->
                       </li>
+                      <li class="nav-item"><a class="nav-link" href="loan-reports.php">
+                          <div class="d-flex align-items-center"><span class="nav-link-text">Loan Reports</span>
+                          </div>
+                        </a>
+                        <!-- more inner pages-->
+                      </li>
                     </ul>
                   </div>
                 </div>

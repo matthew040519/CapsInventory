@@ -96,61 +96,52 @@ $db = new DB();
             </div>
           </div>
         </div>
-        <div class="row mb-3 gy-6">
-          <div class="col-12 col-xxl-2">
-            <div class="row align-items-center g-3 g-xxl-0 h-100 align-content-between">
-              <div class="col-12 col-sm-6 col-md-3 col-lg-6 col-xl-3 col-xxl-12">
-                <div class="d-flex align-items-center"><span class="fs-4 lh-1 uil uil-books text-primary-dark"></span>
-                  <div class="ms-2">
-                    <div class="d-flex align-items-end">
-                      <h2 class="mb-0 me-2"><?php
-                  include('../Classes/Product.php');
+        <div class="row">
+          <div class="col-md-3 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h6 class="card-title">Products</h6>
+                <?php include('../Classes/Product.php');
                   $product = new Product($db->connect());
-                  echo $product->countProducts(); ?></h2><span class="fs-7 fw-semibold text-body">Products</span>
-                    </div>
-                    <p class="text-body-secondary fs-9 mb-0">Products Count</p>
-                  </div>
-                </div>
+                   ?>
+                <h3 class="card-text mb-2"><?php echo $product->countProducts(); ?></h3>
+                
               </div>
-              <div class="col-12 col-sm-6 col-md-3 col-lg-6 col-xl-3 col-xxl-12">
-                <div class="d-flex align-items-center"><span class="fs-4 lh-1 uil uil-users-alt text-success-dark"></span>
-                  <div class="ms-2">
-                    <div class="d-flex align-items-end">
-                      <h2 class="mb-0 me-2"><?php
-                  include('../Classes/Customer.php');
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h6 class="card-title">Customers</h6>
+                <?php include('../Classes/Customer.php');
                   $customer = new Customer($db->connect());
-                  echo $customer->countCustomers(); ?></h2><span class="fs-7 fw-semibold text-body">Customers</span>
-                    </div>
-                    <p class="text-body-secondary fs-9 mb-0">Client</p>
-                  </div>
-                </div>
+                   ?>
+                <h3 class="card-text mb-2"> <?php echo $customer->countCustomers(); ?></h3>
+                
               </div>
-              <div class="col-12 col-sm-6 col-md-3 col-lg-6 col-xl-3 col-xxl-12">
-                <div class="d-flex align-items-center"><span class="fs-4 lh-1 uil uil-invoice text-warning-dark"></span>
-                  <div class="ms-2">
-                    <div class="d-flex align-items-end">
-                      <h2 class="mb-0 me-2"><?php
-                  include('../Classes/Order.php');
+            </div>
+          </div>
+          <div class="col-md-3 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h6 class="card-title">Orders</h6>
+                <?php include('../Classes/Order.php');
                   $order = new Order($db->connect());
-                  echo $order->countOrders(); ?></h2><span class="fs-7 fw-semibold text-body">Orders</span>
-                    </div>
-                    <p class="text-body-secondary fs-9 mb-0">Soon to be cleared</p>
-                  </div>
-                </div>
+                   ?>
+                <h3 class="card-text mb-2"><?php echo $order->countOrders(); ?></h3>
+                
               </div>
-              <div class="col-12 col-sm-6 col-md-3 col-lg-6 col-xl-3 col-xxl-12">
-                <div class="d-flex align-items-center"><span class="fs-4 lh-1 uil uil-money-stack text-success-dark"></span>
-                  <div class="ms-2">
-                    <div class="d-flex align-items-end">
-                      <h2 class="mb-0 me-2"><?php
-                  include('../Classes/ProductTransaction.php');
+            </div>
+          </div>
+           <div class="col-md-3 mb-4">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h6 class="card-title">Total Sales</h6>
+                <?php include('../Classes/ProductTransaction.php');
                   $transaction = new ProductTransaction($db->connect());
-                  echo number_format($transaction->sumCSTransactionsAll(), 2); ?></h2>
-                  <!-- <span class="fs-7 fw-semibold text-body">Total Sales</span> -->
-                    </div>
-                    <p class="text-body-secondary fs-9 mb-0">Total Sales</p>
-                  </div>
-                </div>
+                   ?>
+                <h3 class="card-text mb-2">₱ <?php echo number_format($transaction->sumCSTransactionsAll(), 2); ?></h3>
+                
               </div>
             </div>
           </div>

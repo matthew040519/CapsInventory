@@ -118,11 +118,8 @@ Login::requireLogin();
                     </thead>
                     <tbody class="list" id="order-table-body">
                         <?php
-            include('../Classes/DB.php');
             include('../Classes/ProductTransaction.php');
             include('../Classes/Cart.php');
-
-            $db = new DB();
             $conn = $db->connect();
             $productTransaction = new ProductTransaction($conn);
 

@@ -134,10 +134,8 @@ Login::requireLogin();
                   <tbody class="list" id="order-table-body">
                     <?php 
                     // Include database and object files    
-                    include('../Classes/DB.php');
                     include('../Classes/Order.php');
 
-                    $db = new DB();
                     $order = new Order($db->connect());
                     $orders = $order->getAllOrders();
                     foreach ($orders as $order) {

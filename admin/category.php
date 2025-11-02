@@ -147,10 +147,8 @@ Login::requireLogin();
                             </thead>
                             <tbody class="list">
                                 <?php 
-                                include('../Classes/DB.php');
                                 include('../Classes/Category.php');
                                 
-                                $db = new DB();
                                 $category = new Category($db->connect());
                                 $categories = $category->getAllCategories();
                                 foreach ($categories as $category) { ?>
@@ -160,12 +158,12 @@ Login::requireLogin();
                                 <td class="align-middle">
                                   <!-- Edit Button -->
                                   <button type="button" class="btn btn-sm btn-success me-1" data-bs-toggle="modal" data-bs-target="#editCategoryModal<?php echo $category['id']; ?>">
-                                    <i class="uil uil-edit"></i>
+                                    <i class="fas fa-check"></i>
                                   </button>
                                   <!-- Delete Button -->
                                     <!-- Delete Button triggers modal -->
                                     <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal<?php echo $category['id']; ?>">
-                                    <i class="uil uil-trash"></i>
+                                    <i class="fas fa-trash"></i>
                                     </button>
                                     <!-- Delete Confirmation Modal -->
                                     <div class="modal fade" id="deleteCategoryModal<?php echo $category['id']; ?>" tabindex="-1" aria-labelledby="deleteCategoryModalLabel<?php echo $category['id']; ?>" aria-hidden="true">

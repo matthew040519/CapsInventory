@@ -117,10 +117,8 @@ Login::requireLogin();
                                                 <select name="category_id" id="" class="form-select" required>
                                                     <option value="" disabled selected>Select Category</option>
                                                     <?php
-                                                    include('../Classes/DB.php');
                                                     include('../Classes/Category.php');
 
-                                                    $db = new DB();
                                                     $category = new Category($db->connect());
                                                     $categories = $category->getAllCategories();
                                                     foreach ($categories as $category) {

@@ -96,14 +96,26 @@ Login::requireLogin();
             <li class="nav-item"><a class="nav-link" href="#"><span>Refunded</span><span class="text-body-tertiary fw-semibold">(8)</span></a></li>
             <li class="nav-item"><a class="nav-link" href="#"><span>Failed</span><span class="text-body-tertiary fw-semibold">(2)</span></a></li>
           </ul> -->
+            <?php
+
+include('../Classes/Loan.php');
+                $loan = new Loan($db->connect());
+              ?>
           <div id="orderTable" data-list='{"valueNames":["order","total","customer","payment_status","fulfilment_status","delivery_type","date"],"page":10,"pagination":true}'>
             <div class="mb-4">
               <div class="row g-3 justify-content-between align-items-center">
                 <div class="col-auto">
                   <!-- Pay Loan Button -->
+                   <?php
+                                // Get the max balance for the reference
+                                $loanByRef = $loan->getLoanByReference($_GET['reference']);
+                                $maxBalance = isset($loanByRef['balance']) ? $loanByRef['balance'] : 0;
+                                if($maxBalance > 0){
+                              ?>
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loanPaymentModal">
                     Pay Loan
                   </button>
+                  <?php } ?>
                 </div>
                 <div class="col-auto">
                   <div class="search-box">
@@ -115,14 +127,7 @@ Login::requireLogin();
                 </div>
               </div>
 
-              <?php
-
-                include('../Classes/DB.php');
-include('../Classes/Loan.php');
-                    
-                    $db = new DB();
-                $loan = new Loan($db->connect());
-              ?>
+            
 
               <!-- Loan Payment Modal -->
               <div class="modal fade" id="loanPaymentModal" tabindex="-1" aria-labelledby="loanPaymentModalLabel" aria-hidden="true">
@@ -203,7 +208,7 @@ include('../Classes/Loan.php');
                           <!-- <div class="avatar avatar-m">
                             <img class="rounded-circle" src="../../../assets/img/team/32.webp" alt="" />
                           </div> -->
-                          <h6 class="mb-0 text-body"><?php echo $loan['reference']; ?></h6>
+                          <h6 class="mb-0 text-body"><?php echo $loan['transaction_ref']; ?></h6>
                         </a></td>
                       <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($loan['credit'], 2); ?></td>
                       <td class="amount align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($loan['debit'], 2); ?></td>

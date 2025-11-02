@@ -127,7 +127,7 @@ Login::requireLogin();
                             <div class="col d-flex justify-content-between align-items-center">
                                 <div>
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addProductModal">
-                                        <i class="uil uil-plus"></i> Add Product
+                                        <i class="uil uil-plus"></i> Add Supplier
                                     </button>
                                 </div>
                                 <div>
@@ -152,10 +152,8 @@ Login::requireLogin();
                             </thead>
                             <tbody class="list">
                                 <?php 
-                                include('../Classes/DB.php');
                                 include('../Classes/Supplier.php');
 
-                                $db = new DB();
                                 $supplier = new Supplier($db->connect());
                                 $suppliers = $supplier->getAllSuppliers();
                                 foreach ($suppliers as $supplier) { ?>

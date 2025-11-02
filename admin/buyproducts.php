@@ -105,9 +105,7 @@ Login::requireLogin();
                 
                 <?php 
                    include('../Classes/Product.php');
-                    include('../Classes/DB.php');
                     include('../Classes/Customer.php');
-                                $db = new DB();
                                 $product = new Product($db->connect());
                                 $products = $product->getProductsWithQty();
                                 foreach ($products as $product) { ?>

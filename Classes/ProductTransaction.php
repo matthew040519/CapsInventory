@@ -1,11 +1,14 @@
+
 <?php
 
+    require_once 'Notification.php';
 
-    class ProductTransaction {
+    class ProductTransaction extends Notification {
         private $conn;
         private $table_name = "tblproduct_transactions";
 
         public function __construct($db) {
+            parent::__construct($db);
             $this->conn = $db;
         }
 
@@ -44,7 +47,36 @@
             }
 
             $stmt->bind_param("siiisdidi", $voucher, $cart_id, $product_id, $quantity, $date, $discount, $price, $customer_id, $user_id);
-            echo $stmt->execute();
+            $stmt->execute();
+
+            // Query product name by product_id
+            $productName = '';
+            $queryProduct = "SELECT product_name FROM tblproducts WHERE id = ?";
+            $stmtProduct = $this->conn->prepare($queryProduct);
+            $stmtProduct->bind_param("i", $product_id);
+            $stmtProduct->execute();
+            $resultProduct = $stmtProduct->get_result();
+            if ($rowProduct = $resultProduct->fetch_assoc()) {
+                $productName = $rowProduct['product_name'];
+            }
+
+            $customerName = '';
+            $queryCustomer = "SELECT fullname FROM tblcustomer WHERE id = ?";
+            $stmtCustomer = $this->conn->prepare($queryCustomer);
+            $stmtCustomer->bind_param("i", $customer_id);
+            $stmtCustomer->execute();
+            $resultCustomer = $stmtCustomer->get_result();
+            if ($rowCustomer = $resultCustomer->fetch_assoc()) {
+                $customerName = $rowCustomer['fullname'];
+            }
+
+            $message = "Sold {$quantity} of {$productName} to {$customerName}.";
+            $module = "BuyProducts";
+            $link = "http://localhost/caps_inventory/admin/order_view.php?id=$cart_id";
+
+            $this->addNotification($message, $user_id, $customer_id, $date, $module, $link);
+
+            return $stmt->execute();
         }
 
         // Function to get all product transactions

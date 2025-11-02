@@ -116,10 +116,8 @@ Login::requireLogin();
                             </thead>
                             <tbody class="list">
                                 <?php 
-                                include('../Classes/DB.php');
                                 include('../Classes/ProductTransaction.php');
 
-                                $db = new DB();
                                 $product = new ProductTransaction($db->connect());
                                 $products = $product->getAllCSTransactions();
                                 foreach ($products as $product) { ?>

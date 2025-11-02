@@ -140,7 +140,7 @@ Login::requireLogin();
                             <div class="col d-flex justify-content-between align-items-center">
                                 <div>
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addProductModal">
-                                        <i class="uil uil-plus"></i> Add Product
+                                        <i class="uil uil-plus"></i> Add Customer
                                     </button>
                                 </div>
                                 <div>
@@ -166,10 +166,8 @@ Login::requireLogin();
                             </thead>
                             <tbody class="list">
                                 <?php 
-                                include('../Classes/DB.php');
                                 include('../Classes/Customer.php');
 
-                                $db = new DB();
                                 $customer = new Customer($db->connect());
                                 $customers = $customer->getAllCustomers();
                                 foreach ($customers as $customer) { ?>

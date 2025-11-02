@@ -16,9 +16,11 @@
         $transaction_ref = $randomCode;
         $customer_id = $_POST['customer_id'];
         $debit = $_POST['amount'];
+            session_start();
+            $user_id = $_SESSION['user_id'];
 
         $loan = new Loan($conn);
-        if ($loan->addLoanPayment($reference, $transaction_ref, $customer_id, $debit)) {
+        if ($loan->addLoanPayment($reference, $transaction_ref, $customer_id, $debit, $user_id)) {
             header('Location: ../admin/loan_details.php?reference=' . urlencode($reference) . '&success=Payment added successfully');
             exit();
         } else {
