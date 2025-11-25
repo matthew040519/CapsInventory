@@ -193,4 +193,24 @@ HAVING inventory < p.reorder_point";
             $stmt->bind_param("si", $voucher, $id);
             return $stmt->execute();
         }
+
+        public function chartdataCS() {
+            $query = "SELECT DATE_FORMAT(date, '%Y-%m') AS month, SUM(quantity_out * price) - SUM(discount) AS total_sales
+                      FROM " . $this->table_name . "
+                      WHERE voucher = 'CS'
+                      GROUP BY month
+                      ORDER BY month ASC";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $dataPoints = [];
+            while ($row = $result->fetch_assoc()) {
+                $dataPoints[] = [
+                    "label" => $row['month'],
+                    "y" => (float)$row['total_sales']
+                ];
+            }
+            return $dataPoints;
+        }
     }

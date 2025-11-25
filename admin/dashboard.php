@@ -146,6 +146,55 @@ $db = new DB();
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <!-- CanvasJS CDN -->
+              <script src="https://cdn.canvasjs.com/canvasjs.min.js"></script>
+              <div class="card">
+                <div class="card-body">
+                  <div id="salesChartContainer" style="height: 370px; width: 100%;"></div>
+                </div>
+              </div>
+              
+              <?php
+              // Example: Get sales data for the last 7 days
+              $salesData = $transaction->chartdataCS(); // Should return array: [['date'=>'2024-06-01','total'=>1000], ...]
+              // print_r($salesData);
+              // Prepare dataPoints for CanvasJS
+              $dataPoints = [];
+              foreach ($salesData as $row) {
+                $dataPoints[] = [
+                  "label" => $row['label'],
+                  "y" => (float)$row['y']
+                ];
+              }
+              ?>
+              <script>
+              window.addEventListener('DOMContentLoaded', function() {
+                var chart = new CanvasJS.Chart("salesChartContainer", {
+                  animationEnabled: true,
+                  theme: "light2",
+                  title:{
+                    text: "Sales (Every Month)"
+                  },
+                  axisX:{
+                    valueFormatString: "MMM YYYY"
+                  },
+                  axisY:{
+                    title: "Sales (₱)",
+                    includeZero: true
+                  },
+                  data: [{        
+                    type: "line",
+                    markerSize: 8,
+                    dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+                  }]
+                });
+                chart.render();
+              });
+              </script>
+          </div>
+        </div>
         <!-- <div class="row g-4 mb-4">
           <div class="col-md-4">
             <div class="card shadow-sm">
