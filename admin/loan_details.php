@@ -100,6 +100,7 @@ Login::requireLogin();
 
 include('../Classes/Loan.php');
                 $loan = new Loan($db->connect());
+                
               ?>
           <div id="orderTable" data-list='{"valueNames":["order","total","customer","payment_status","fulfilment_status","delivery_type","date"],"page":10,"pagination":true}'>
             <div class="mb-4">
@@ -107,6 +108,15 @@ include('../Classes/Loan.php');
                 <div class="col-auto">
                   <!-- Pay Loan Button -->
                    <?php
+
+                   if (isset($_GET['notification_id'])) {
+              // include_once('../Classes/DB.php');
+              // $db = new DB();
+              // $conn = $db->connect();
+              $notification_id = intval($_GET['notification_id']);
+              $stmt = $conn->prepare("UPDATE notifications SET is_read = 1 WHERE id = ?");
+              $stmt->execute([$notification_id]);
+            }
                                 // Get the max balance for the reference
                                 $loanByRef = $loan->getLoanByReference($_GET['reference']);
                                 $maxBalance = isset($loanByRef['balance']) ? $loanByRef['balance'] : 0;

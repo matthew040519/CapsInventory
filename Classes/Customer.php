@@ -31,4 +31,10 @@
             $stmt->bind_param("ssss", $name, $address, $contact, $gender);
             return $stmt->execute();
         }
+
+        public function updateCustomer($id, $name, $address, $contact, $gender) {
+            $stmt = $this->db->prepare("UPDATE tblcustomer SET fullname = ?, address = ?, contact_no = ?, gender = ? WHERE id = ?");
+            $stmt->bind_param("ssssi", $name, $address, $contact, $gender, $id);
+            return $stmt->execute();
+        }
     }

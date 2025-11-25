@@ -9,7 +9,7 @@
         }
 
         public function getAllNotifications() {
-            $stmt = $this->db->prepare("SELECT * FROM notifications INNER JOIN tblcustomer ON notifications.customer_id = tblcustomer.id ORDER BY tdate DESC");
+            $stmt = $this->db->prepare("SELECT *, notifications.id as notification_id FROM notifications INNER JOIN tblcustomer ON notifications.customer_id = tblcustomer.id ORDER BY tdate DESC");
             $stmt->execute();
             return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         }

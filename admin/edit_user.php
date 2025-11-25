@@ -83,9 +83,9 @@ Login::requireLogin();
       <div class="content">
         <div class="row gy-3 mb-6 justify-content-between">
           <div class="col-md-9 col-auto">
-            <h2 class="mb-2 text-body-emphasis">Buy Products</h2>
+            <h2 class="mb-2 text-body-emphasis">Edit User</h2>
             <p class="text-body-tertiary fw-semibold">
-            The "Buy Products" section allows users to view, search, and add new products to the inventory. Here, you can see a list of all available products with details such as category, name, description, and price. You can also add new products using the provided form, making it easy to manage and update your inventory efficiently.
+              Edit user details such as username, email, and password. Use this form to update the user's information in the system.
             </p>
           </div>
         </div>
@@ -94,94 +94,48 @@ Login::requireLogin();
                         $success = htmlspecialchars($_GET['success']);
                         echo '<div class="alert alert-success text-center" role="alert">' . $success . '</div>';
                       }
+
+                    require_once '../Classes/Users.php';
+
+                    if (isset($_GET['id'])) {
+                        $userId = intval($_GET['id']);
+                        $user = new Users($db->connect());
+
+                        $userData = $user->getUserById($userId);
+
+                        if ($userData) {
+                            // You can use $userData['username'], $userData['email'], etc. to prefill the form if needed
+                        } else {
+                            echo '<div class="alert alert-danger text-center" role="alert">User not found.</div>';
+                        }
+                    } else {
+                        echo '<div class="alert alert-danger text-center" role="alert">No user ID specified.</div>';
+                    }
                       ?>
-         <section class="pt-5 pb-9">
 
-        <div class="product-filter-container">
-          <!-- <button class="btn btn-sm btn-phoenix-secondary text-body-tertiary mb-5 d-lg-none" data-phoenix-toggle="offcanvas" data-phoenix-target="#productFilterColumn"><span class="fa-solid fa-filter me-2"></span>Filter</button> -->
-          <div class="row">
-            <div class="col-lg-12 col-xxl-12">
-              <div class="row">
-                
-                <?php 
-                   include('../Classes/Product.php');
-                    include('../Classes/Customer.php');
-                                $product = new Product($db->connect());
-                                $products = $product->getProductsWithQty();
-                                foreach ($products as $product) { ?>
-                <div class="col-12 col-sm-6 col-md-4 col-xxl-2 mb-2">
-                  <div class="card h-100">
-                    <div class="card-body">
-                                   <div class="position-relative text-decoration-none product-card h-100">
-                          <div class="d-flex flex-column justify-content-between h-100">
-                            <div>
-                              <div class="border border-1 border-translucent rounded-3 position-relative mb-3">
-                                <button class="btn btn-wish btn-wish-primary z-2 d-toggle-container" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to wishlist">
-                                  <span class="fas fa-heart d-block-hover" data-fa-transform="down-1"></span>
-                                  <span class="far fa-heart d-none-hover" data-fa-transform="down-1"></span>
-                                </button>
-                                <img class="img-thumbnail" style="height: 200px; width: 100%;" src="../uploads/products/<?php echo $product['image']; ?>" alt="" />
-                              </div>
-                            </div>
-                            <!-- Product Modal -->
-                            <?php include('../admin/modals/sellproducts.php'); ?>
-                            <div>
-                              <h5 class="text-body-secondary">
-                                      <a href="#" data-bs-toggle="modal" style="text-decoration: none;" data-bs-target="#productModal<?php echo $product['id']; ?>">
-                                          <?php echo $product['product_name']; ?>
-                                      </a>
-                                        <br>
-                                        <small class="text-muted"><?php echo number_format($product['price'], 2); ?></small>
-                              </h5>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                   
-                    <div class="card-footer">
-                                  <div>
-                                    (<?php echo $product['total_quantity']; ?> Qty Left)
-                                  </div>
-                    </div>
-                  </div>
+                <div class="card">
+                      <div class="card-body">
+                        <form action="../include/user.php" enctype="multipart/form-data" method="POST">
+                            <input type="hidden" name="action" value="edit">
+                            <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="username" class="form-label">Username</label>
+                                                <input type="text" class="form-control" value="<?php echo $userData['username']; ?>" id="username" name="username" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input type="email" class="form-control" value="<?php echo $userData['email']; ?>" id="email" name="email" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </div>
+                                </form>
+                      </div>
                 </div>
-                <?php } ?>
-              </div>
-              <!-- <div class="d-flex justify-content-end">
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination mb-0">
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        <span class="fas fa-chevron-left"> </span>
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">1</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">2</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">3</a>
-                    </li>
-                    <li class="page-item active" aria-current="page">
-                      <a class="page-link" href="#">4</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">5</a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#"> <span class="fas fa-chevron-right"></span></a>
-                    </li>
-                  </ul>
-                </nav>
-              </div> -->
-            </div>
-          </div>
-        </div>
-        <!-- end of .container-->
-
-      </section>
       </div>
       <script>
         var navbarTopStyle = window.config.config.phoenixNavbarTopStyle;
@@ -220,7 +174,7 @@ Login::requireLogin();
     <script src="../vendors/flatpickr/flatpickr.min.js"></script>
     <script src="../assets/js/phoenix.js"></script>
     <script src="../assets/js/projectmanagement-dashboard.js"></script>
-    
+
   </body>
 
 </html>

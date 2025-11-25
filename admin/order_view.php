@@ -127,6 +127,15 @@ Login::requireLogin();
             $discount = 0;
             $CustomerId = '';
 
+            if (isset($_GET['notification_id'])) {
+              // include_once('../Classes/DB.php');
+              // $db = new DB();
+              // $conn = $db->connect();
+              $notification_id = intval($_GET['notification_id']);
+              $stmt = $conn->prepare("UPDATE notifications SET is_read = 1 WHERE id = ?");
+              $stmt->execute([$notification_id]);
+            }
+
             $result = $productTransaction->getCSTransactionById($_GET['id']);
             foreach ($result as $results) {
                 if($results['voucher'] != 'LS'){

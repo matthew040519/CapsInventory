@@ -165,7 +165,15 @@
                   <span data-feather="bell" style="height:20px;width:20px;"></span>
                   <?php if (count($allNotifications) > 0): ?>
                   <span class="position-absolute top-10 left-10 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.65rem;">
-                    <?php echo count($allNotifications); ?>
+                    <?php
+                      $unreadCount = 0;
+                      foreach ($allNotifications as $notif) {
+                        if (isset($notif['is_read']) && $notif['is_read'] == 0) {
+                          $unreadCount++;
+                        }
+                      }
+                      echo $unreadCount;
+                    ?>
                   </span>
                   <?php endif; ?>
                 </span>
@@ -184,7 +192,7 @@
                       <?php
                         foreach ($allNotifications as $notification) {
                       ?>
-                      <div class="px-2 px-sm-3 py-3 notification-card position-relative read border-bottom">
+                      <div class="px-2 px-sm-3 py-3 notification-card position-relative read border-bottom<?php echo ($notification['is_read']) ? ' bg-body-tertiary' : ''; ?>">
                         <div class="d-flex align-items-center justify-content-between position-relative">
                           <div class="d-flex">
                             <div class="avatar avatar-m status-online me-3">
@@ -192,11 +200,10 @@
                             </div>
                             <div class="flex-1 me-sm-3">
                               <h4 class="fs-9 text-body-emphasis">
-                                
-                                  <?php echo $notification['fullname']; ?>
+                                <?php echo $notification['fullname']; ?>
                               </h4>
                               <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal">
-                                <a style="text-decoration-line: none;" href="<?php echo $notification['link']; ?>">
+                                <a style="text-decoration-line: none;" href="<?php echo $notification['link']; ?>&notification_id=<?php echo $notification['notification_id']; ?>">
                                   <span class='me-1 fs-10'>💬</span><?php echo $notification['message']; ?>
                                 </a>
                               </p>

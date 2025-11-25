@@ -176,6 +176,14 @@ Login::requireLogin();
                                 <td class="align-middle fullname"><?php echo $customer['fullname']; ?></td>
                                 <td class="align-middle address"><?php echo $customer['address']; ?></td>
                                 <td class="align-middle gender"><?php echo $customer['gender']; ?></td>
+                                <td class="align-middle text-end">
+                                  <a href="edit_customer.php?id=<?php echo $customer['id']; ?>" class="btn btn-sm btn-success me-1" title="Edit">
+                                    <i class="uil uil-edit"></i>
+                                  </a>
+                                  <a href="delete_customer.php?id=<?php echo $customer['id']; ?>" class="btn btn-sm btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this customer?');">
+                                    <i class="uil uil-trash"></i>
+                                  </a>
+                                </td>
                               </tr>
                             <?php } ?>
                             </tbody>

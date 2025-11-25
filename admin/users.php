@@ -83,9 +83,9 @@ Login::requireLogin();
       <div class="content">
         <div class="row gy-3 mb-6 justify-content-between">
           <div class="col-md-9 col-auto">
-            <h2 class="mb-2 text-body-emphasis">Products</h2>
+            <h2 class="mb-2 text-body-emphasis">Users</h2>
             <p class="text-body-tertiary fw-semibold">
-              Products represent individual items or goods that are managed within your inventory system. Each product can have attributes such as name, category, brand, and other relevant details. Organizing your inventory by products allows for efficient tracking, management, and reporting of stock levels, making it easier for users to find and manage specific items.
+              Users represent individuals or entities that have access to your system. Each user can have attributes such as username, email, and role. Organizing your user data allows for efficient management, communication, and reporting, making it easier for administrators to find and manage specific user information.
             </p>
           </div>
         </div>
@@ -97,49 +97,24 @@ Login::requireLogin();
                       ?>
         <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
-                                <form action="../include/product.php" enctype="multipart/form-data" method="POST">
+                                <form action="../include/user.php" enctype="multipart/form-data" method="POST">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="productModalLabel">Create New Product</h5>
+                                            <h5 class="modal-title" id="productModalLabel">Create New User</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="mb-3">
-                                                <label for="product_image" class="form-label">Image</label>
-                                                <input type="file" class="form-control" id="product_image" name="product_image" required>
+                                                <label for="username" class="form-label">Username</label>
+                                                <input type="text" class="form-control" id="username" name="username" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="product_name" class="form-label">Name</label>
-                                                <input type="text" class="form-control" id="product_name" name="product_name" required>
+                                                <label for="email" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="email" name="email" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="category" class="form-label">Category</label>
-                                                <select name="category_id" id="" class="form-select" required>
-                                                    <option value="" disabled selected>Select Category</option>
-                                                    <?php
-                                                    include('../Classes/Category.php');
-
-                                                    $category = new Category($db->connect());
-                                                    $categories = $category->getAllCategories();
-                                                    foreach ($categories as $category) {
-                                                        echo '<option value="' . $category['id'] . '">' . htmlspecialchars($category['category_name']) . '</option>';
-                                                    }
-                                                    ?>
-
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="price" class="form-label">Price</label>
-                                                <input type="number" class="form-control" id="price" name="price" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="re_order_point" class="form-label">Re Order Point</label>
-                                                <input type="number" class="form-control" id="re_order_point" name="re_order_point" required>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="description" class="form-label">Description</label>
-                                                <!-- <input type="text" name="description" class="form-control"> -->
-                                                <textarea name="description" class="form-control" id="description" cols="6" rows="6" required></textarea>
+                                                <label for="password" class="form-label">Password</label>
+                                                <input type="password" class="form-control" id="password" name="password" required>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -150,13 +125,13 @@ Login::requireLogin();
                             </div>
                         </div>
          <div class="p-4 code-to-copy">
-                      <div id="tableExample3" data-list='{"valueNames":["id","category_name","product_name", "reorder_point", "description", "price"],"page":10,"pagination":true}'>
+                      <div id="tableExample3" data-list='{"valueNames":["id","fullname","address", "gender"],"page":10,"pagination":true}'>
                         <!-- Add Category Button, Modal Trigger, and Search Box in the Same Row -->
                         <div class="row mb-3 align-items-center">
                             <div class="col d-flex justify-content-between align-items-center">
                                 <div>
                                     <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addProductModal">
-                                        <i class="uil uil-plus"></i> Add Product
+                                        <i class="uil uil-plus"></i> Add Users
                                     </button>
                                 </div>
                                 <div>
@@ -174,32 +149,31 @@ Login::requireLogin();
                             <thead>
                               <tr>
                                 <th class="sort border-top border-translucent ps-3" data-sort="id">ID</th>
-                                <th class="sort border-top" data-sort="category_name">Category</th>
-                                <th class="sort border-top" data-sort="product_name">Product</th>
-                                <th class="sort border-top" data-sort="reorder_point">Re Order Point</th>
-                                <th class="sort border-top" data-sort="description">Description</th>
-                                <th class="sort border-top" data-sort="price">Price</th>
+                                <th class="sort border-top" data-sort="fullname">Fullname</th>
+                                <th class="sort border-top" data-sort="address">Address</th>
+                                <th class="sort border-top" data-sort="gender">Gender</th>
                                 <th class="sort text-end align-middle pe-0 border-top" scope="col"></th>
                               </tr>
                             </thead>
                             <tbody class="list">
                                 <?php 
-                                include('../Classes/Product.php');
+                                include('../Classes/Users.php');
 
-                                $db = new DB();
-                                $product = new Product($db->connect());
-                                $products = $product->getAllProductsWithCategories();
-                                foreach ($products as $product) { ?>
+                                $user = new Users($db->connect());
+                                $users = $user->getUser();
+                                foreach ($users as $user) { ?>
                               <tr>
-                                <td class="align-middle ps-3 id"><?php echo $product['id']; ?></td>
-                                <td class="align-middle category_name"><?php echo $product['category_name']; ?></td>
-                                <td class="align-middle product_name"><?php echo $product['product_name']; ?></td>
-                                <td class="align-middle reorder_point"><?php echo $product['reorder_point']; ?></td>
-                                 <td class="align-middle description"><?php echo $product['description']; ?></td>
-                                <td class="align-middle price"><?php echo number_format($product['price'], 2); ?></td>
+                                <td class="align-middle ps-3 id"><?php echo $user['id']; ?></td>
+                                <td class="align-middle fullname"><?php echo $user['username']; ?></td>
+                                <td class="align-middle address"><?php echo $user['email']; ?></td>
+                                <td class="align-middle gender"><?php echo $user['role'] == 1 ? 'Admin' : 'User'; ?></td>
                                 <td class="align-middle text-end">
-                                  <a href="edit_product.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-success me-1"><i class="uil uil-edit"></i></a>
-                                  <a href="delete_product.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this product?');"> <i class="uil uil-trash"></i></a>
+                                  <a href="edit_user.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-success me-1" title="Edit">
+                                    <i class="uil uil-edit"></i>
+                                  </a>
+                                  <a href="delete_user.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-danger" title="Delete" onclick="return confirm('Are you sure you want to delete this user?');">
+                                    <i class="uil uil-trash"></i>
+                                  </a>
                                 </td>
                               </tr>
                             <?php } ?>

@@ -53,4 +53,15 @@ Class Product {
         $stmt->bind_param("sssdii", $image, $product_name, $description, $price, $category_id, $re_order_point);
         return $stmt->execute();
     }
+
+    public function updateProduct($id, $product_name, $description, $price, $category_id, $re_order_point, $image = null) {
+        if ($image) {
+            $stmt = $this->db->prepare("UPDATE tblproducts SET product_name = ?, description = ?, price = ?, category_id = ?, reorder_point = ?, image = ? WHERE id = ?");
+            $stmt->bind_param("ssdiiss", $product_name, $description, $price, $category_id, $re_order_point, $image, $id);
+        } else {
+            $stmt = $this->db->prepare("UPDATE tblproducts SET product_name = ?, description = ?, price = ?, category_id = ?, reorder_point = ? WHERE id = ?");
+            $stmt->bind_param("ssdiii", $product_name, $description, $price, $category_id, $re_order_point, $id);
+        }
+        return $stmt->execute();
+    }
 }

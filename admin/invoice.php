@@ -96,6 +96,15 @@ Login::requireLogin();
             $db = new DB();
             $conn = $db->connect();
 
+            if (isset($_GET['notification_id'])) {
+              // include_once('../Classes/DB.php');
+              // $db = new DB();
+              // $conn = $db->connect();
+              $notification_id = intval($_GET['notification_id']);
+              $stmt = $conn->prepare("UPDATE notifications SET is_read = 1 WHERE id = ?");
+              $stmt->execute([$notification_id]);
+            }
+
             if (isset($_GET['order_id'])) {
                 $order_id = $_GET['order_id'];
 
