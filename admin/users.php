@@ -149,8 +149,8 @@ Login::requireLogin();
                             <thead>
                               <tr>
                                 <th class="sort border-top border-translucent ps-3" data-sort="id">ID</th>
-                                <th class="sort border-top" data-sort="fullname">Fullname</th>
-                                <th class="sort border-top" data-sort="address">Address</th>
+                                <th class="sort border-top" data-sort="fullname">Username</th>
+                                <th class="sort border-top" data-sort="address">Email</th>
                                 <th class="sort border-top" data-sort="gender">Gender</th>
                                 <th class="sort text-end align-middle pe-0 border-top" scope="col"></th>
                               </tr>

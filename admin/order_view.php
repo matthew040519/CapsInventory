@@ -167,7 +167,7 @@ Login::requireLogin();
                           </button>
 
                              <?php if ($results['voucher'] != 'LS') { ?>
-                              <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#moveToLoanModal<?php echo $results['id']; ?>">
+                              <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#moveToLoanModal<?php echo $results['id']; ?>">
                                 <i class="fas fa-arrows-turn-right"></i>
                               </button>
                             <?php } else { ?>

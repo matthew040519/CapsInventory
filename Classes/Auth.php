@@ -39,7 +39,7 @@ Class Login {
     }
 
     public function login() {
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->bind_param("s", $this->username);
         $stmt->execute();
         $result = $stmt->get_result();

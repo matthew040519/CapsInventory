@@ -98,7 +98,7 @@
                       <div class="mb-3 text-start">
                         <label class="form-label" for="email">Email address</label>
                         <div class="form-icon-container">
-                          <input class="form-control form-icon-input" required id="email" name="username" type="email" placeholder="name@example.com" /><span class="fas fa-user text-body fs-9 form-icon"></span>
+                          <input class="form-control form-icon-input" required id="email" name="username" type="text" placeholder="username" /><span class="fas fa-user text-body fs-9 form-icon"></span>
                         </div>
                       </div>
                       <div class="mb-3 text-start">
