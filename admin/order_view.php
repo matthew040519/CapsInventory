@@ -133,12 +133,13 @@ Login::requireLogin();
               // $conn = $db->connect();
               $notification_id = intval($_GET['notification_id']);
               $stmt = $conn->prepare("UPDATE notifications SET is_read = 1 WHERE id = ?");
-              $stmt->execute([$notification_id]);
+              $stmt->bind_param("i", $notification_id);
+              $stmt->execute();
             }
 
             $result = $productTransaction->getCSTransactionById($_GET['id']);
             foreach ($result as $results) {
-                if($results['voucher'] != 'LS'){
+                if($results['voucher'] != 'LS'){  
                     $total += $results['price'] * $results['quantity_out'];
                 }
                 
@@ -293,6 +294,7 @@ Login::requireLogin();
                 <div class="col-6">
                   <div class="card mb-3">
                     <div class="card-body">
+                      <form action="checkout.php" method="POST">
                       <h3 class="card-title mb-4">Summary</h3>
                       <div>
                         <div class="d-flex justify-content-between">
@@ -303,13 +305,20 @@ Login::requireLogin();
                           <p class="text-body fw-semibold">Discount :</p>
                           <p class="text-danger fw-semibold">- &#8369;<?php echo number_format($discount, 2); ?></p>
                         </div>
+                        <div class="d-flex justify-content-between mb-2">
+                          <p class="text-body fw-semibold">Downpayment :</p>
+                          <input type="number" step="0.01" max="<?php echo $total; ?>" class="form-control w-50 text-end d-inline-block" name="downpayment" id="downpayment" style="display:inline-block;">
+                        </div>
                       </div>
                       <div class="d-flex justify-content-between border-top border-translucent border-dashed pt-4">
                         <h4 class="mb-0">Total :</h4>
                         <h4 class="mb-0">&#8369;<?php echo number_format($total - $discount, 2); ?></h4>
                       </div>
                       <br>
-                      <a href="checkout.php?order_id=<?php echo $_GET['id']; ?>" class="btn btn-primary w-100">Checkout</a>
+                      <input type="hidden" name="order_id" value="<?php echo $_GET['id']; ?>">
+                      <input type="hidden" name="total_amt" value="<?php echo $total - $discount; ?>">
+                      <button type="submit" class="btn btn-primary w-100">Checkout</button>
+                      </form>
                     </div>
                   </div>
                 </div>

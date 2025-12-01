@@ -116,6 +116,14 @@ Login::requireLogin();
                                                 <label for="password" class="form-label">Password</label>
                                                 <input type="password" class="form-control" id="password" name="password" required>
                                             </div>
+                                            <div class="mb-3">
+                                              <label for="role" class="form-label">Role</label>
+                                              <select class="form-control" id="role" name="role" required>
+                                                <option value="">Select Role</option>
+                                                <option value="1">Admin</option>
+                                                <option value="2">Cashier</option>
+                                              </select>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary">Add</button>
@@ -166,7 +174,7 @@ Login::requireLogin();
                                 <td class="align-middle ps-3 id"><?php echo $user['id']; ?></td>
                                 <td class="align-middle fullname"><?php echo $user['username']; ?></td>
                                 <td class="align-middle address"><?php echo $user['email']; ?></td>
-                                <td class="align-middle gender"><?php echo $user['role'] == 1 ? 'Admin' : 'User'; ?></td>
+                                <td class="align-middle gender"><?php echo $user['role'] == 1 ? 'Admin' : 'Cashier'; ?></td>
                                 <td class="align-middle text-end">
                                   <a href="edit_user.php?id=<?php echo $user['id']; ?>" class="btn btn-sm btn-success me-1" title="Edit">
                                     <i class="uil uil-edit"></i>

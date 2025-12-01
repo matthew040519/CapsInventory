@@ -4,13 +4,15 @@
 require_once '../Classes/DB.php';
 require_once '../Classes/Order.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['order_id'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['order_id'])) {
 
     $db = new DB();
     $conn = $db->connect();
     session_start();
 
-    $order_id = $_GET['order_id'];
+    $order_id = $_POST['order_id'];
+    $total_amt = isset($_POST['total_amt']) ? floatval($_POST['total_amt']) : 0; // Default total_amt to 0 if not provided
+    $downpayment = isset($_POST['downpayment']) ? floatval($_POST['downpayment']) : 0; // Default downpayment to 0 if not provided
     $user_id = $_SESSION['user_id'];
 
     // Check for voucher in tblproduct_transactions for the given order_id
@@ -32,8 +34,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['order_id'])) {
 
     $randomCode = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 6);
 
-    if ($total > 0) {
+    if ($total > 0 || $downpayment > 0) {
         // Insert into tblloans
+        $partial_debt = $total_amt - $downpayment;
+        $final_debt = $total + $partial_debt;
         $reference = $randomCode;
         $loanQuery = "INSERT INTO tblloans (reference, order_id, customer_id, tdate) VALUES (?, ?, ?, NOW())";
         $loanStmt = $conn->prepare($loanQuery);
@@ -43,8 +47,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['order_id'])) {
 
         $loanDetails = "INSERT INTO tblloans_details (reference, transaction_ref, customer_id, credit, tdate) VALUES (?, ?, ?, ?, NOW())";
         $loanDetailsStmt = $conn->prepare($loanDetails);
-        $loanDetailsStmt->bind_param("ssid", $reference, $reference, $customer_id, $total);
+        $loanDetailsStmt->bind_param("ssid", $reference, $reference, $customer_id, $final_debt);
         $loanDetailsStmt->execute();
+
+        $updateCartQuery = "UPDATE tblcart SET dp = ?, dept = ? WHERE id = ?";
+        $updateCartStmt = $conn->prepare($updateCartQuery);
+        $updateCartStmt->bind_param("ddi", $downpayment, $partial_debt, $order_id);
+        $updateCartStmt->execute();
+        $updateCartStmt->close();
     }
 
     // You can use $voucherExists for further logic if needed

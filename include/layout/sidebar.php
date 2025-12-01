@@ -44,12 +44,14 @@
                         </a>
                         <!-- more inner pages-->
                       </li>
+                      <?php if ($_SESSION['role'] == 1): ?>
                       <li class="nav-item"><a class="nav-link" href="users.php">
                           <div class="d-flex align-items-center"><span class="nav-link-text">Users</span>
                           </div>
                         </a>
                         <!-- more inner pages-->
                       </li>
+                      <?php endif; ?>
                     </ul>
                   </div>
                 </div>
@@ -89,6 +91,7 @@
                     </ul>
                   </div>
                 </div>
+                <?php if ($_SESSION['role'] == 1): ?>
                 <div class="nav-item-wrapper">
                   <a class="nav-link dropdown-indicator label-1" href="#nv-Reports" role="button" data-bs-toggle="collapse" aria-expanded="true" aria-controls="nv-home">
                     <div class="d-flex align-items-center">
@@ -126,6 +129,7 @@
                     </ul>
                   </div>
                 </div>
+                <?php endif; ?>
               </li>
             </ul>
           </div>

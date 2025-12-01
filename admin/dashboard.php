@@ -140,7 +140,7 @@ $db = new DB();
                 <?php include('../Classes/ProductTransaction.php');
                   $transaction = new ProductTransaction($db->connect());
                    ?>
-                <h3 class="card-text mb-2">₱ <?php echo number_format($transaction->sumCSTransactionsAll(), 2); ?></h3>
+                <h3 class="card-text mb-2">₱ <?php echo number_format($transaction->sumCSTransactionsAll() - $transaction->sumDownPayments(), 2); ?></h3>
                 
               </div>
             </div>

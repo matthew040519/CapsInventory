@@ -27,9 +27,10 @@
         $username = $_POST['username'];
         $password = $_POST['password'];
         $email = $_POST['email'];
+        $role = $_POST['role'];
 
         $user = new Users($conn);
-        if ($user->createUser($username, $password, $email)) {
+        if ($user->createUser($username, $password, $email, $role)) {
             header('Location: ../admin/users.php?success=User added successfully');
             exit();
         } else {

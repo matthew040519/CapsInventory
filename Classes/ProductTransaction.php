@@ -47,7 +47,7 @@
             }
 
             $stmt->bind_param("siiisdidi", $voucher, $cart_id, $product_id, $quantity, $date, $discount, $price, $customer_id, $user_id);
-            $stmt->execute();
+            // $stmt->execute();
 
             // Query product name by product_id
             $productName = '';
@@ -142,10 +142,18 @@ WHERE tblproduct_transactions.cart_id = ?";
             return $stmt->get_result()->fetch_assoc()['totalPrice'];
         }
 
+        public function sumDownPayments()
+        {
+            $query = "SELECT SUM(dept) AS totaldept FROM tblcart";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            return $stmt->get_result()->fetch_assoc()['totaldept'];
+        }
+
 
         public function getAllCSTransactions()
         {
-            $query = "SELECT tblproduct_transactions.id, tblcustomer.fullname, tblproduct_transactions.discount, tblproduct_transactions.date, tblproducts.product_name, tblproducts.price, tblproduct_transactions.quantity_out 
+            $query = "SELECT tblproduct_transactions.id, tblcustomer.fullname, tblcart.dp, tblproduct_transactions.discount, tblproduct_transactions.date, tblproducts.product_name, tblproducts.price, tblproduct_transactions.quantity_out 
 FROM tblproduct_transactions
 JOIN tblproducts ON tblproducts.id=tblproduct_transactions.product_id
 JOIN tblcart ON tblcart.id=tblproduct_transactions.cart_id
