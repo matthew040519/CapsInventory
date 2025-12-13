@@ -76,7 +76,7 @@
                   <div class="col mx-auto">
                     <div class="auth-form-box">
                       <div class="text-center mb-7"><a class="d-flex flex-center text-decoration-none mb-4" href="index.html">
-                          <div class="d-flex align-items-center fw-bolder fs-3 d-inline-block"><img src="assets/img/icons/logo.png" alt="phoenix" width="58" />
+                          <div class="d-flex align-items-center fw-bolder fs-3 d-inline-block"><img src="src/logo.jpg" alt="phoenix" width="58" />
                           </div>
                         </a>
                         <h3 class="text-body-highlight">Sign In</h3>
