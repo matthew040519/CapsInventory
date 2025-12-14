@@ -123,8 +123,8 @@ Login::requireLogin();
                       </th> -->
                       <!-- <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">ORDER</th> -->
                       
-                      <th class="sort align-middle ps-8" scope="col" data-sort="customer">CUSTOMER</th>
-                      <th class="sort align-middle pe-0" scope="col" data-sort="reference">Reference</th>
+                      <th class="sort align-middle" scope="col" data-sort="customer">CUSTOMER</th>
+                       <th class="sort align-middle" scope="col" data-sort="project">PROJECT</th>
                       <th class="sort align-middle pe-0" scope="col" data-sort="date">DATE</th>
                       <th class="sort align-middle pe-0" scope="col" data-sort="amount">Balance</th>
                       <th class="sort align-middle" scope="col"></th>
@@ -133,25 +133,24 @@ Login::requireLogin();
                   <tbody class="list" id="order-table-body">
                     <?php 
                     // Include database and object files  
-                    include('../Classes/Order.php');
+                    include('../Classes/Projects.php');
 
-                    $order = new Order($db->connect());
-                    $orders = $order->loanCheckoutOrder();
-                    foreach ($orders as $order) {
+                    $projects = new Projects($db->connect());
+                    $loanProjects = $projects->getProjectLoanList();
+                    foreach ($loanProjects as $loanProject) {
                     ?>
-                    <!-- <?php print_r($order); ?> -->
                     <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                      <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-body" href="../../../apps/e-commerce/landing/profile.html">
+                      <td class="customer align-middle white-space-nowrap text-body-tertiary"><a class="d-flex align-items-center text-body" href="../../../apps/e-commerce/landing/profile.html">
                           <!-- <div class="avatar avatar-m">
                             <img class="rounded-circle" src="../../../assets/img/team/32.webp" alt="" />
                           </div> -->
-                          <h6 class="mb-0 text-body"><?php echo $order['fullname']; ?></h6>
+                          <h6 class="mb-0 text-body"><?php echo $loanProject['fullname']; ?></h6>
                         </a></td>
-                         <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['reference']; ?></td>
-                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['tdate']; ?></td>
-                      <td class="amount align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($order['totalAmount'], 2); ?></td>
+                         <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $loanProject['project_name']; ?></td>
+                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $loanProject['tdate']; ?></td>
+                      <td class="amount align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($loanProject['total_balance'], 2); ?></td>
                         <td class="align-middle">
-                            <a href="loan_details.php?id=<?php echo $order['id']; ?>&reference=<?php echo $order['reference']; ?>" class="btn btn-sm btn-primary">
+                            <a href="loan_details.php?id=<?php echo $loanProject['project_id']; ?>" class="btn btn-sm btn-primary">
                                 View
                             </a>
                         </td>

@@ -71,6 +71,12 @@
                         </a>
                         <!-- more inner pages-->
                       </li>
+                      <li class="nav-item"><a class="nav-link" href="projects.php">
+                          <div class="d-flex align-items-center"><span class="nav-link-text">Projects</span>
+                          </div>
+                        </a>
+                        <!-- more inner pages-->
+                      </li>
                       <li class="nav-item"><a class="nav-link" href="buyproducts.php">
                           <div class="d-flex align-items-center"><span class="nav-link-text">Buy Products</span>
                           </div>
@@ -82,12 +88,11 @@
                           </div>
                         </a>
                       </li>
-                       <li class="nav-item"><a class="nav-link" href="orders.php">
+                       <!-- <li class="nav-item"><a class="nav-link" href="orders.php">
                           <div class="d-flex align-items-center"><span class="nav-link-text">Orders</span>
                           </div>
                         </a>
-                        <!-- more inner pages-->
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
                 </div>

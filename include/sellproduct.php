@@ -17,11 +17,11 @@
         $date = $_POST['date'];
         $discount = $_POST['discount'];
         $price = $_POST['price'];
-        $customer_id = $_POST['customer_id'];
+        $project_id = $_POST['project_id'];
         $user_id = $_SESSION['user_id'];
 
         $productTransaction = new ProductTransaction($conn);
-        if ($productTransaction->sellProduct($voucher, $product_id, $quantity, $date, $discount, $price, $customer_id, $user_id)) {
+        if ($productTransaction->sellProduct($voucher, $product_id, $quantity, $date, $discount, $price, $project_id, $user_id)) {
             header('Location: ../admin/buyproducts.php?success=Product added successfully');
             exit();
         } else {

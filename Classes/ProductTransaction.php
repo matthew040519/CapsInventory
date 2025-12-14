@@ -20,61 +20,61 @@
             return $stmt->execute();
         }
 
-        public function sellProduct($voucher, $product_id, $quantity, $date, $discount, $price, $customer_id, $user_id) {
+        public function sellProduct($voucher, $product_id, $quantity, $date, $discount, $price, $project_id, $user_id) {
 
-            $queryCheck = "SELECT id FROM tblcart WHERE customer_id = ? AND status_id = 1 LIMIT 1";
-            $stmtCheck = $this->conn->prepare($queryCheck);
-            $stmtCheck->bind_param("i", $customer_id);
-            $stmtCheck->execute();
-            $resultCheck = $stmtCheck->get_result();
+            // $queryCheck = "SELECT id FROM tblcart WHERE customer_id = ? AND status_id = 1 LIMIT 1";
+            // $stmtCheck = $this->conn->prepare($queryCheck);
+            // $stmtCheck->bind_param("i", $project_id);
+            // $stmtCheck->execute();
+            // $resultCheck = $stmtCheck->get_result();
 
-            if ($resultCheck->num_rows === 0) {
-                $queryInsertCart = "INSERT INTO tblcart (customer_id, date) VALUES (?, ?)";
-                $stmtInsertCart = $this->conn->prepare($queryInsertCart);
-                $stmtInsertCart->bind_param("is", $customer_id, $date);
-                $stmtInsertCart->execute();
-            }
+            // if ($resultCheck->num_rows === 0) {
+            //     $queryInsertCart = "INSERT INTO tblcart (customer_id, date) VALUES (?, ?)";
+            //     $stmtInsertCart = $this->conn->prepare($queryInsertCart);
+            //     $stmtInsertCart->bind_param("is", $customer_id, $date);
+            //     $stmtInsertCart->execute();
+            // }
 
-            $query = "INSERT INTO " . $this->table_name . " (voucher, cart_id, product_id, quantity_out, date, discount, price, customer_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $query = "INSERT INTO " . $this->table_name . " (voucher, product_id, quantity_out, date, discount, price, project_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->conn->prepare($query);
             // Get cart_id from tblcart
             $cart_id = null;
-            if ($row = $resultCheck->fetch_assoc()) {
-                $cart_id = $row['id'];
-            } else {
-                // Get the last inserted cart id
-                $cart_id = $this->conn->insert_id;
-            }
+            // if ($row = $resultCheck->fetch_assoc()) {
+            //     $cart_id = $row['id'];
+            // } else {
+            //     // Get the last inserted cart id
+            //     $cart_id = $this->conn->insert_id;
+            // }
 
-            $stmt->bind_param("siiisdidi", $voucher, $cart_id, $product_id, $quantity, $date, $discount, $price, $customer_id, $user_id);
+            $stmt->bind_param("siisdiii", $voucher, $product_id, $quantity, $date, $discount, $price, $project_id, $user_id);
             // $stmt->execute();
 
             // Query product name by product_id
-            $productName = '';
-            $queryProduct = "SELECT product_name FROM tblproducts WHERE id = ?";
-            $stmtProduct = $this->conn->prepare($queryProduct);
-            $stmtProduct->bind_param("i", $product_id);
-            $stmtProduct->execute();
-            $resultProduct = $stmtProduct->get_result();
-            if ($rowProduct = $resultProduct->fetch_assoc()) {
-                $productName = $rowProduct['product_name'];
-            }
+            // $productName = '';
+            // $queryProduct = "SELECT product_name FROM tblproducts WHERE id = ?";
+            // $stmtProduct = $this->conn->prepare($queryProduct);
+            // $stmtProduct->bind_param("i", $product_id);
+            // $stmtProduct->execute();
+            // $resultProduct = $stmtProduct->get_result();
+            // if ($rowProduct = $resultProduct->fetch_assoc()) {
+            //     $productName = $rowProduct['product_name'];
+            // }
 
-            $customerName = '';
-            $queryCustomer = "SELECT fullname FROM tblcustomer WHERE id = ?";
-            $stmtCustomer = $this->conn->prepare($queryCustomer);
-            $stmtCustomer->bind_param("i", $customer_id);
-            $stmtCustomer->execute();
-            $resultCustomer = $stmtCustomer->get_result();
-            if ($rowCustomer = $resultCustomer->fetch_assoc()) {
-                $customerName = $rowCustomer['fullname'];
-            }
+            // $customerName = '';
+            // $queryCustomer = "SELECT fullname FROM tblcustomer WHERE id = ?";
+            // $stmtCustomer = $this->conn->prepare($queryCustomer);
+            // $stmtCustomer->bind_param("i", $customer_id);
+            // $stmtCustomer->execute();
+            // $resultCustomer = $stmtCustomer->get_result();
+            // if ($rowCustomer = $resultCustomer->fetch_assoc()) {
+            //     $customerName = $rowCustomer['fullname'];
+            // }
 
-            $message = "Sold {$quantity} of {$productName} to {$customerName}.";
-            $module = "BuyProducts";
-            $link = "http://localhost/caps_inventory/admin/order_view.php?id=$cart_id";
+            // $message = "Sold {$quantity} of {$productName} to {$customerName}.";
+            // $module = "BuyProducts";
+            // $link = "http://localhost/caps_inventory/admin/order_view.php?id=$cart_id";
 
-            $this->addNotification($message, $user_id, $customer_id, $date, $module, $link);
+            // $this->addNotification($message, $user_id, $customer_id, $date, $module, $link);
 
             return $stmt->execute();
         }

@@ -81,11 +81,17 @@ Login::requireLogin();
       <?php include('../include/layout/sidebar.php') ?>
       <?php include('../include/layout/header.php') ?>
       <div class="content">
+          <?php
+
+include('../Classes/Projects.php');
+                $projects = new Projects($db->connect());
+                
+              ?>
         <div class="mb-9">
           <div class="row g-3 mb-4">
             <div class="col-auto">
-              <h2 class="mb-0">Loan Details</h2>
-            <p class="text-body-tertiary">Below is a list of recent loan details, including order number, total amount, customer details, payment status, fulfilment status, delivery type, and date. Use the filters and search to find specific loan details.</p>
+              <h2 class="mb-0">Project: <span><?php echo htmlspecialchars($projects->getProjectById($_GET['id'])['project_name'] ?? ''); ?></span></h2>
+            <!-- <p class="text-body-tertiary">Below is a list of recent loan details, including order number, total amount, customer details, payment status, fulfilment status, delivery type, and date. Use the filters and search to find specific loan details.</p> -->
             </div>
           </div>
           <!-- <ul class="nav nav-links mb-3 mb-lg-2 mx-n3">
@@ -96,12 +102,7 @@ Login::requireLogin();
             <li class="nav-item"><a class="nav-link" href="#"><span>Refunded</span><span class="text-body-tertiary fw-semibold">(8)</span></a></li>
             <li class="nav-item"><a class="nav-link" href="#"><span>Failed</span><span class="text-body-tertiary fw-semibold">(2)</span></a></li>
           </ul> -->
-            <?php
-
-include('../Classes/Loan.php');
-                $loan = new Loan($db->connect());
-                
-              ?>
+          
           <div id="orderTable" data-list='{"valueNames":["order","total","customer","payment_status","fulfilment_status","delivery_type","date"],"page":10,"pagination":true}'>
             <div class="mb-4">
               <div class="row g-3 justify-content-between align-items-center">
@@ -118,8 +119,9 @@ include('../Classes/Loan.php');
               $stmt->execute([$notification_id]);
             }
                                 // Get the max balance for the reference
-                                $loanByRef = $loan->getLoanByReference($_GET['reference']);
-                                $maxBalance = isset($loanByRef['balance']) ? $loanByRef['balance'] : 0;
+                                $loanProjects = $projects->getTotalBalance($_GET['id']);
+                                $maxBalance = $loanProjects;
+                                // echo $maxBalance;
                                 if($maxBalance > 0){
                               ?>
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loanPaymentModal">
@@ -149,35 +151,15 @@ include('../Classes/Loan.php');
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                        <input type="hidden" name="reference" value="<?php echo $_GET['reference']; ?>">
                         <div class="mb-3">
-                          <label for="loanAmount" class="form-label">Amount</label>
-
-                              <?php
-                                // Get the max balance for the reference
-                                $loanByRef = $loan->getLoanByReference($_GET['reference']);
-                                $maxBalance = isset($loanByRef['balance']) ? $loanByRef['balance'] : 0;
-                              ?>
-                              <input type="number" class="form-control" id="loanAmount" name="amount" max="<?php echo $maxBalance; ?>" required>
-
+                          <label for="totalBalance" class="form-label">Total Balance</label>
+                          <input type="text" class="form-control" name="total_balance" id="totalBalance" value="<?php echo number_format($maxBalance, 2); ?>" readonly>
                         </div>
-                        <?php
-                                // Get the max balance for the reference
-                                $loanByRef = $loan->getLoanByReference($_GET['reference']);
-                                $customer_id = isset($loanByRef['customer_id']) ? $loanByRef['customer_id'] : 0;
-                              ?>
-                        <input type="hidden" value="<?php echo $customer_id; ?>" name="customer_id">
                         <div class="mb-3">
-                          <label for="loanAmount" class="form-label">Balance</label>
-
-                              <?php
-                                // Get the max balance for the reference
-                                $loanByRef = $loan->getLoanByReference($_GET['reference']);
-                                $maxBalance = isset($loanByRef['balance']) ? $loanByRef['balance'] : 0;
-                              ?>
-                              <input type="number" class="form-control" id="loanAmount" readonly value="<?php echo $maxBalance; ?>" required>
-
+                          <label for="amountToPay" class="form-label">Amount to Pay</label>
+                          <input type="number" class="form-control" id="amountToPay" name="amount_to_pay" min="1" max="<?php echo $maxBalance; ?>" step="0.01" required>
                         </div>
+                        <input type="hidden" name="project_id" value="<?php echo htmlspecialchars($_GET['id']); ?>">
                       </div>
                       <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Submit Payment</button>
@@ -199,7 +181,7 @@ include('../Classes/Loan.php');
                       </th> -->
                       <!-- <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">ORDER</th> -->
                       
-                      <th class="sort align-middle ps-8" scope="col" data-sort="customer">Reference</th>
+                      <!-- <th class="sort align-middle ps-8" scope="col" data-sort="customer">Reference</th> -->
                       <th class="sort align-middle pe-0" scope="col" data-sort="date">Credit</th>
                       <th class="sort align-middle pe-0" scope="col" data-sort="amount">Debit</th>
                       <th class="sort align-middle" scope="col" data-sort="date">Date</th>
@@ -208,18 +190,11 @@ include('../Classes/Loan.php');
                   <tbody class="list" id="order-table-body">
                     <?php 
                     // Include database and object files 
-                    // include('../Classes/Loan.php');
-                    $loan = new Loan($db->connect());
-                    $loans = $loan->getLoanDetails($_GET['reference']);
+                    $project = new Projects($db->connect());
+                    $loans = $project->getProjectLoans($_GET['id']);
                     foreach ($loans as $loan) {
                     ?>
                     <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                      <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-body" href="../../../apps/e-commerce/landing/profile.html">
-                          <!-- <div class="avatar avatar-m">
-                            <img class="rounded-circle" src="../../../assets/img/team/32.webp" alt="" />
-                          </div> -->
-                          <h6 class="mb-0 text-body"><?php echo $loan['transaction_ref']; ?></h6>
-                        </a></td>
                       <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($loan['credit'], 2); ?></td>
                       <td class="amount align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($loan['debit'], 2); ?></td>
                       <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $loan['tdate']; ?></td>

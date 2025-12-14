@@ -38,17 +38,17 @@
                       <!-- <p class="text-warning fw-bolder fs-6 mb-0">10% off</p> -->
                     </div>
                     <div class="mb-2">
-                                                <label for="customer" class="form-label">Customer</label>
-                                                <select name="customer_id" id="" class="form-select" required>
-                                                    <option value="" disabled selected>Select Customer</option>
+                                                <label for="project" class="form-label">Project</label>
+                                                <select name="project_id" id="" class="form-select" required>
+                                                    <option value="" disabled selected>Select Project</option>
                                                     <?php
                                                     
-
+                                                    require_once '../Classes/Projects.php';
                                                     $db = new DB();
-                                                    $customer = new Customer($db->connect());
-                                                    $customers = $customer->getAllCustomers();
-                                                    foreach ($customers as $customer) {
-                                                        echo '<option value="' . $customer['id'] . '">' . htmlspecialchars($customer['fullname']) . '</option>';
+                                                    $projects = new Projects($db->connect());
+                                                    $projectsList = $projects->getAllProjects();
+                                                    foreach ($projectsList as $project) {
+                                                        echo '<option value="' . $project['id'] . '">' . htmlspecialchars($project['project_name']) . '</option>';
                                                     }
                                                     ?>
 
