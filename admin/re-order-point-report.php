@@ -90,6 +90,15 @@ Login::requireLogin();
           </div>
         </div>
         <?php
+        if (isset($_GET['notification_id'])) {
+              // include_once('../Classes/DB.php');
+              // $db = new DB();
+              // $conn = $db->connect();
+              $notification_id = intval($_GET['notification_id']);
+              $stmt = $conn->prepare("UPDATE notifications SET is_read = 1 WHERE id = ?");
+              $stmt->bind_param("i", $notification_id);
+              $stmt->execute();
+            }
                       if (isset($_GET['success'])) {
                         $success = htmlspecialchars($_GET['success']);
                         echo '<div class="alert alert-success text-center" role="alert">' . $success . '</div>';

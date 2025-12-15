@@ -113,7 +113,7 @@ Login::requireLogin();
             </div>
             <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
               <div class="table-responsive scrollbar mx-n1 px-1">
-                <table class="table table-sm fs-9 mb-0">
+                 <table class="table table-sm fs-9 mb-0">
                   <thead>
                     <tr>
                       <!-- <th class="white-space-nowrap fs-9 align-middle ps-0" style="width:26px;">
@@ -122,35 +122,33 @@ Login::requireLogin();
                         </div>
                       </th> -->
                       <!-- <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">ORDER</th> -->
-                      <th class="sort align-middle ps-8" scope="col" data-sort="id">Loan ID</th>
-                      <th class="sort align-middle ps-8" scope="col" data-sort="customer">CUSTOMER</th>
-                      <th class="sort align-middle pe-0" scope="col" data-sort="reference">Reference</th>
+                      
+                      <th class="sort align-middle" scope="col" data-sort="customer">CUSTOMER</th>
+                       <th class="sort align-middle" scope="col" data-sort="project">PROJECT</th>
                       <th class="sort align-middle pe-0" scope="col" data-sort="date">DATE</th>
                       <th class="sort align-middle pe-0" scope="col" data-sort="amount">Balance</th>
                     </tr>
                   </thead>
                   <tbody class="list" id="order-table-body">
                     <?php 
-                    // Include database and object files    
-                    include('../Classes/Order.php');
+                    // Include database and object files  
+                    include('../Classes/Projects.php');
 
-                    $order = new Order($db->connect());
-                    $orders = $order->loanCheckoutOrderReturnALl();
-                    foreach ($orders as $order) {
+                    $projects = new Projects($db->connect());
+                    $loanProjects = $projects->getProjectLoanList();
+                    foreach ($loanProjects as $loanProject) {
                     ?>
-                    <!-- <?php print_r($order); ?> -->
                     <tr class="hover-actions-trigger btn-reveal-trigger position-static">
-                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['LoanId']; ?></td>
-                      <td class="customer align-middle white-space-nowrap ps-8"><a class="d-flex align-items-center text-body" href="../../../apps/e-commerce/landing/profile.html">
+                      <td class="customer align-middle white-space-nowrap text-body-tertiary"><a class="d-flex align-items-center text-body" href="../../../apps/e-commerce/landing/profile.html">
                           <!-- <div class="avatar avatar-m">
                             <img class="rounded-circle" src="../../../assets/img/team/32.webp" alt="" />
                           </div> -->
-                          <h6 class="mb-0 text-body"><?php echo $order['fullname']; ?></h6>
+                          <h6 class="mb-0 text-body"><?php echo $loanProject['fullname']; ?></h6>
                         </a></td>
-                         <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['reference']; ?></td>
-                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $order['tdate']; ?></td>
-                      <td class="amount align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($order['totalAmount'], 2); ?></td>
-                    
+                         <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $loanProject['project_name']; ?></td>
+                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $loanProject['tdate']; ?></td>
+                      <td class="amount align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($loanProject['total_balance'], 2); ?></td>
+                        
                     </tr>
                     <?php } ?>
                   </tbody>

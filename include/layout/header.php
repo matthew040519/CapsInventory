@@ -203,7 +203,21 @@
                                 <?php echo $notification['fullname']; ?>
                               </h4>
                               <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal">
-                                <a style="text-decoration-line: none;" href="<?php echo $notification['link']; ?>&notification_id=<?php echo $notification['notification_id']; ?>">
+                                <?php
+                                  $link = $notification['link'];
+                                  // Check if the link ends with ".php"
+                                  if (preg_match('/\.php(\?.*)?$/', $link)) {
+                                      // If it already has a query string, use &, else use ?
+                                      $separator = (strpos($link, '?') !== false) ? '&' : '?';
+                                  } elseif (preg_match('/\d$/', $link)) {
+                                      // If it ends with a number, use &
+                                      $separator = '&';
+                                  } else {
+                                      // Default to ?
+                                      $separator = '?';
+                                  }
+                                ?>
+                                <a style="text-decoration-line: none;" href="<?php echo $link . $separator . 'notification_id=' . $notification['notification_id']; ?>">
                                   <span class='me-1 fs-10'>💬</span><?php echo $notification['message']; ?>
                                 </a>
                               </p>

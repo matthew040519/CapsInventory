@@ -116,7 +116,8 @@ include('../Classes/Projects.php');
               // $conn = $db->connect();
               $notification_id = intval($_GET['notification_id']);
               $stmt = $conn->prepare("UPDATE notifications SET is_read = 1 WHERE id = ?");
-              $stmt->execute([$notification_id]);
+              $stmt->bind_param("i", $notification_id);
+              $stmt->execute();
             }
                                 // Get the max balance for the reference
                                 $loanProjects = $projects->getTotalBalance($_GET['id']);

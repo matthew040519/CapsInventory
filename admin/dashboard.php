@@ -124,11 +124,11 @@ $db = new DB();
           <div class="col-md-3 mb-4">
             <div class="card shadow-sm">
               <div class="card-body">
-                <h6 class="card-title">Orders</h6>
-                <?php include('../Classes/Order.php');
-                  $order = new Order($db->connect());
+                <h6 class="card-title">Projects</h6>
+                <?php include('../Classes/Projects.php');
+                  $project = new Projects($db->connect());
                    ?>
-                <h3 class="card-text mb-2"><?php echo $order->countOrders(); ?></h3>
+                <h3 class="card-text mb-2"><?php echo count($project->getAllProjects()); ?></h3>
                 
               </div>
             </div>
@@ -137,10 +137,10 @@ $db = new DB();
             <div class="card shadow-sm">
               <div class="card-body">
                 <h6 class="card-title">Total Sales</h6>
-                <?php include('../Classes/ProductTransaction.php');
-                  $transaction = new ProductTransaction($db->connect());
+                <?php
+                  $project = new Projects($db->connect());
                    ?>
-                <h3 class="card-text mb-2">₱ <?php echo number_format($transaction->sumCSTransactionsAll() - $transaction->sumDownPayments(), 2); ?></h3>
+                <h3 class="card-text mb-2">₱ <?php echo number_format($project->totalDebit(), 2); ?></h3>
                 
               </div>
             </div>
@@ -158,7 +158,7 @@ $db = new DB();
               
               <?php
               // Example: Get sales data for the last 7 days
-              $salesData = $transaction->chartdataCS(); // Should return array: [['date'=>'2024-06-01','total'=>1000], ...]
+              $salesData = $project->getDebitChart(); // Should return array: [['date'=>'2024-06-01','total'=>1000], ...]
               // print_r($salesData);
               // Prepare dataPoints for CanvasJS
               $dataPoints = [];

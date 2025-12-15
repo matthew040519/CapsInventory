@@ -278,7 +278,7 @@ include('../Classes/Projects.php');
                         <div class="modal fade" id="editProjectModal_<?php echo $project['project_id']; ?>" tabindex="-1" aria-labelledby="editProjectModalLabel_<?php echo $project['project_id']; ?>" aria-hidden="true">
                             <div class="modal-dialog">
                                 <form action="edit_project.php" method="post" enctype="multipart/form-data" class="modal-content">
-                                    <input type="text" name="id" value="<?php echo $project['project_id']; ?>">
+                                    <input type="hidden" name="id" value="<?php echo $project['project_id']; ?>">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="editProjectModalLabel_<?php echo $project['project_id']; ?>">Edit Project</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -432,21 +432,28 @@ include('../Classes/Projects.php');
                                             $projectProducts = $projects->getProjectProducts($project['project_id']);
                                             if (!empty($projectProducts)) {
                                                 echo '<div class="mt-4">';
-                                                echo '<h6 class="fw-bold mb-2">Products</h6>';
+                                                echo '<h6 class="fw-bold mb-3"><i class="uil uil-box"></i> Products Assigned</h6>';
                                                 echo '<div class="table-responsive">';
-                                                echo '<table class="table table-sm table-bordered">';
-                                                echo '<thead><tr>
-                                                        <th>Name</th>
-                                                        <th>Quantity</th>
-                                                        <th>Category</th>
-                                                        <th>Description</th>
+                                                echo '<table class="table table-hover align-middle shadow-sm rounded">';
+                                                echo '<thead class="table-light"><tr>
+                                                        <th scope="col"><i class="uil uil-cube"></i> Name</th>
+                                                        <th scope="col"><i class="uil uil-sort-amount-up"></i> Quantity</th>
+                                                        <th scope="col"><i class="uil uil-tag-alt"></i> Category</th>
+                                                        <th scope="col" class="text-end"></th>
                                                     </tr></thead><tbody>';
                                                 foreach ($projectProducts as $prod) {
                                                     echo '<tr>';
-                                                    echo '<td>' . htmlspecialchars($prod['product_name']) . '</td>';
-                                                    echo '<td>' . htmlspecialchars($prod['quantity_out']) . '</td>';
-                                                    echo '<td>' . htmlspecialchars($prod['category_name']) . '</td>';
-                                                    echo '<td>' . htmlspecialchars($prod['description']) . '</td>';
+                                                    echo '<td class="fw-semibold">' . htmlspecialchars($prod['product_name']) . '</td>';
+                                                    echo '<td><span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2">' . htmlspecialchars($prod['quantity_out']) . '</span></td>';
+                                                    echo '<td><span class="badge bg-info-subtle text-info px-3 py-2">' . htmlspecialchars($prod['category_name']) . '</span></td>';
+                                                    echo '<td class="text-end">
+                                                        <form action="delete_project_product.php" method="post" style="display:inline;" onsubmit="return confirm(\'Are you sure you want to remove this product from the project?\');">
+                                                            <input type="hidden" name="transaction_id" value="' . $prod['transaction_id'] . '">
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Remove Product">
+                                                                <i class="uil uil-trash-alt"></i> Remove
+                                                            </button>
+                                                        </form>
+                                                    </td>';
                                                     echo '</tr>';
                                                 }
                                                 echo '</tbody></table></div></div>';

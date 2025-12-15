@@ -48,7 +48,7 @@
                                                     $projects = new Projects($db->connect());
                                                     $projectsList = $projects->getAllProjects();
                                                     foreach ($projectsList as $project) {
-                                                        echo '<option value="' . $project['id'] . '">' . htmlspecialchars($project['project_name']) . '</option>';
+                                                        echo '<option value="' . $project['project_id'] . '">' . htmlspecialchars($project['project_name']) . '</option>';
                                                     }
                                                     ?>
 

@@ -47,7 +47,7 @@
             // }
 
             $stmt->bind_param("siisdiii", $voucher, $product_id, $quantity, $date, $discount, $price, $project_id, $user_id);
-            // $stmt->execute();
+            $stmt->execute();
 
             // Query product name by product_id
             // $productName = '';
@@ -70,13 +70,39 @@
             //     $customerName = $rowCustomer['fullname'];
             // }
 
-            // $message = "Sold {$quantity} of {$productName} to {$customerName}.";
-            // $module = "BuyProducts";
-            // $link = "http://localhost/caps_inventory/admin/order_view.php?id=$cart_id";
+            // Get product name and reorder point
+            $productName = '';
+            $reorderPoint = 0;
+            $queryProduct = "SELECT product_name, reorder_point FROM tblproducts WHERE id = ?";
+            $stmtProduct = $this->conn->prepare($queryProduct);
+            $stmtProduct->bind_param("i", $product_id);
+            $stmtProduct->execute();
+            $resultProduct = $stmtProduct->get_result();
+            if ($rowProduct = $resultProduct->fetch_assoc()) {
+                $productName = $rowProduct['product_name'];
+                $reorderPoint = $rowProduct['reorder_point'];
+            }
 
-            // $this->addNotification($message, $user_id, $customer_id, $date, $module, $link);
+            // Check current inventory for the product
+            $currentInventory = 0;
+            $queryInventory = "SELECT IFNULL(SUM(quantity_in - quantity_out), 0) AS inventory FROM tblproduct_transactions WHERE product_id = ?";
+            $stmtInventory = $this->conn->prepare($queryInventory);
+            $stmtInventory->bind_param("i", $product_id);
+            $stmtInventory->execute();
+            $resultInventory = $stmtInventory->get_result();
+            if ($rowInventory = $resultInventory->fetch_assoc()) {
+                $currentInventory = $rowInventory['inventory'];
+            }
 
-            return $stmt->execute();
+            // Send notification if inventory is below reorder point
+            if ($currentInventory < $reorderPoint) {
+                $message = "Warning: Inventory for {$productName} is below the reorder point ({$currentInventory}/{$reorderPoint}).";
+                $module = "Inventory";
+                $link = "http://localhost/caps_inventory/admin/re-order-point-report.php";
+                $this->addNotification($message, $user_id, $project_id, $date, $module, $link);
+            }
+
+            
         }
 
         // Function to get all product transactions

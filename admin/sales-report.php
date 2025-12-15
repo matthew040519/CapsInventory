@@ -100,40 +100,39 @@ Login::requireLogin();
                       <div id="tableExample3" data-list='{"valueNames":["id","date","customer", "product", "price", "quantity_out", "discount", "total"],"page":10,"pagination":true}'>
                        
                         <div class="table-responsive">
-                          <table class="table table-striped table-sm fs-9 mb-0">    
-                            <thead>
-                              <tr>
-                                <th class="sort border-top border-translucent ps-3" data-sort="id">ID</th>
-                                <th class="sort border-top" data-sort="date">Date</th>
-                                <th class="sort border-top" data-sort="customer">Customer</th>
-                                <th class="sort border-top" data-sort="product">Product</th>
-                                <th class="sort border-top" data-sort="price">Price</th>
-                                <th class="sort border-top" data-sort="quantity_out">Quantity Sold</th>
-                                <th class="sort border-top" data-sort="discount">Discount</th>
-                                <th class="sort border-top" data-sort="total">Total</th>
-                                <th class="sort text-end align-middle pe-0 border-top" scope="col"></th>
-                              </tr>
-                            </thead>
-                            <tbody class="list">
-                                <?php 
-                                include('../Classes/ProductTransaction.php');
-
-                                $product = new ProductTransaction($db->connect());
-                                $products = $product->getAllCSTransactions();
-                                foreach ($products as $product) { ?>
-                              <tr>
-                                <td class="align-middle ps-3 id"><?php echo $product['id']; ?></td>
-                                <td class="align-middle date"><?php echo $product['date']; ?></td>
-                                <td class="align-middle customer"><?php echo $product['fullname']; ?></td>
-                                <td class="align-middle product_name"><?php echo $product['product_name']; ?></td>
-                                <td class="align-middle price"><?php echo number_format($product['price'], 2); ?></td>
-                                <td class="align-middle quantity_out"><?php echo $product['quantity_out']; ?></td>
-                                <td class="align-middle discount"><?php echo number_format($product['discount'], 2); ?></td>
-                                <td class="align-middle total"><?php echo number_format(($product['quantity_out'] * $product['price']) - $product['discount'], 2); ?></td>
-                              </tr>
-                            <?php } ?>
-                            </tbody>
-                          </table>
+                          <table class="table table-sm fs-9 mb-0">
+                  <thead>
+                    <tr>
+                      <!-- <th class="white-space-nowrap fs-9 align-middle ps-0" style="width:26px;">
+                        <div class="form-check mb-0 fs-8">
+                          <input class="form-check-input" id="checkbox-bulk-order-select" type="checkbox" data-bulk-select='{"body":"order-table-body"}' />
+                        </div>
+                      </th> -->
+                      <!-- <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">ORDER</th> -->
+                      
+                      <th class="sort align-middle ps-8" scope="col" data-sort="customer">Project</th>
+                      <!-- <th class="sort align-middle pe-0" scope="col" data-sort="date">Credit</th> -->
+                      <th class="sort align-middle pe-0" scope="col" data-sort="amount">Debit</th>
+                      <th class="sort align-middle" scope="col" data-sort="date">Sales</th>
+                    </tr>
+                  </thead>
+                  <tbody class="list" id="order-table-body">
+                    <?php 
+                    // Include database and object files 
+                    include_once('../Classes/DB.php');
+                    include_once('../Classes/Projects.php');
+                    $project = new Projects($db->connect());
+                    $loans = $project->getAllProjectLoans();
+                    foreach ($loans as $loan) {
+                    ?>
+                    <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $loan['project_name']; ?></td>
+                      <td class="amount align-middle white-space-nowrap text-body-tertiary"><?php echo number_format($loan['debit'], 2); ?></td>
+                      <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $loan['tdate']; ?></td>
+                    </tr>
+                    <?php } ?>
+                  </tbody>
+                </table>
                         </div>
                         <div class="d-flex justify-content-between mt-3"><span class="d-none d-sm-inline-block" data-list-info="data-list-info"></span>
                           <div class="d-flex">
