@@ -140,7 +140,7 @@ $db = new DB();
                 <?php
                   $project = new Projects($db->connect());
                    ?>
-                <h3 class="card-text mb-2">₱ <?php echo number_format($project->totalDebit(), 2); ?></h3>
+                <h3 class="card-text mb-2">₱ <?php echo number_format($project->getTotalProjectCost(), 2); ?></h3>
                 
               </div>
             </div>

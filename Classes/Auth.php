@@ -50,6 +50,7 @@ Class Login {
                 $_SESSION['username'] = $row['username'];
                 $_SESSION['email'] = $row['email'];
                 $_SESSION['role'] = $row['role'];
+                $_SESSION['image'] = $row['image'];
 
                 return true;
             }

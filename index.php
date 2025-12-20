@@ -96,7 +96,7 @@
                       ?>
                       <form method="POST" action="include/auth/Login.php">
                       <div class="mb-3 text-start">
-                        <label class="form-label" for="email">Email address</label>
+                        <label class="form-label" for="email">Username</label>
                         <div class="form-icon-container">
                           <input class="form-control form-icon-input" required id="email" name="username" type="text" placeholder="username" /><span class="fas fa-user text-body fs-9 form-icon"></span>
                         </div>

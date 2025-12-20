@@ -19,6 +19,8 @@
         $downpayment = $_POST['downpayment'];
         $user_id = $_SESSION['user_id'];
 
+        // echo $status;
+
         // Check if downpayment is higher than project cost
         if (floatval($downpayment) > floatval($project_cost)) {
             header('Location: ../admin/projects.php?error=Downpayment cannot be higher than project cost');

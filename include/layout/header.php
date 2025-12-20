@@ -311,7 +311,8 @@
             </li> -->
             <li class="nav-item dropdown"><a class="nav-link lh-1 pe-0" id="navbarDropdownUser" href="#!" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                 <div class="avatar avatar-l ">
-                  <img class="rounded-circle " src="../../assets/img/team/40x40/57.webp" alt="" />
+                  <!-- assets/img/team/40x40/57.webp -->
+                  <img class="rounded-circle " src="<?php echo ($_SESSION['image'] ?? 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'); ?>" alt="" />
 
                 </div>
               </a>
@@ -320,12 +321,17 @@
                   <div class="card-body p-0">
                     <div class="text-center pt-4 pb-3">
                       <div class="avatar avatar-xl ">
-                        <img class="rounded-circle " src="../../assets/img/team/72x72/57.webp" alt="" />
+                        <img class="rounded-circle " src="<?php echo ($_SESSION['image'] ?? 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'); ?>" alt="" />
                       </div>
                       <h6 class="mt-2 text-body-emphasis"><?php echo $_SESSION['username'] ?></h6>
                     </div>
                     <div class="mb-3 mx-3">
                       <!-- <input class="form-control form-control-sm" id="statusUpdateInput" type="text" placeholder="Update your status" /> -->
+                      <form action="../include/auth/update_profile_picture.php" method="post" enctype="multipart/form-data">
+                        <label for="profileImage" class="form-label">Update Profile Picture</label>
+                        <input class="form-control form-control-sm mb-2" type="file" name="profile_picture" id="profileImage" accept="image/*" required>
+                        <button type="submit" class="btn btn-primary btn-sm w-100">Upload</button>
+                      </form>
                     </div>
                   </div>
                   <div class="card-footer p-0 border-top border-translucent">

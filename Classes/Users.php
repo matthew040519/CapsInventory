@@ -15,9 +15,9 @@ class Users {
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function createUser($username, $password, $email, $role) {
-        $stmt = $this->db->prepare("INSERT INTO users (username, password, email, role) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $username, password_hash($password, PASSWORD_BCRYPT), $email, $role);
+    public function createUser($username, $password, $email, $role, $filename) {
+        $stmt = $this->db->prepare("INSERT INTO users (username, password, email, role, image) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssss", $username, password_hash($password, PASSWORD_BCRYPT), $email, $role, $filename);
         return $stmt->execute();
     }
 

@@ -94,6 +94,10 @@ Login::requireLogin();
                         $success = htmlspecialchars($_GET['success']);
                         echo '<div class="alert alert-success text-center" role="alert">' . $success . '</div>';
                       }
+                      if(isset($_GET['error'])) {
+                        $error = htmlspecialchars($_GET['error']);
+                        echo '<div class="alert alert-danger text-center" role="alert">' . $error . '</div>';
+                      }
                       ?>
         <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -104,6 +108,10 @@ Login::requireLogin();
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="profile_picture" class="form-label">Profile Picture</label>
+                                                <input type="file" class="form-control" id="profile_picture" name="profile_picture" required>
+                                            </div>
                                             <div class="mb-3">
                                                 <label for="username" class="form-label">Username</label>
                                                 <input type="text" class="form-control" id="username" name="username" required>

@@ -41,6 +41,8 @@
             $stmt->bind_param("i", $project_id);
             $stmt->execute();
             $stmt->close();
+
+            return true;
         }
 
         public function addProject($customer_id, $project_description, $project_name, $project_cost, $project_downpayment, $project_file, $tdate, $status, $user_id) {
@@ -160,6 +162,16 @@
             $row = $result->fetch_assoc();
             $stmt->close();
             return $row['total_debit'] ?? 0;
+        }
+
+        public function getTotalProjectCost() {
+            $query = "SELECT SUM(project_cost) AS total_cost FROM tblprojects";
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            $stmt->close();
+            return $row['total_cost'] ?? 0;
         }
 
         public function getDebitChart()

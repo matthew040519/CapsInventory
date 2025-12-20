@@ -83,11 +83,11 @@
                         </a>
                         <!-- more inner pages-->
                       </li>
-                       <li class="nav-item"><a class="nav-link" href="loan-payments.php">
+                       <!-- <li class="nav-item"><a class="nav-link" href="loan-payments.php">
                           <div class="d-flex align-items-center"><span class="nav-link-text">Loan Payments</span>
                           </div>
                         </a>
-                      </li>
+                      </li> -->
                        <!-- <li class="nav-item"><a class="nav-link" href="orders.php">
                           <div class="d-flex align-items-center"><span class="nav-link-text">Orders</span>
                           </div>
@@ -125,12 +125,11 @@
                         </a>
                         <!-- more inner pages-->
                       </li>
-                      <li class="nav-item"><a class="nav-link" href="loan-reports.php">
+                      <!-- <li class="nav-item"><a class="nav-link" href="loan-reports.php">
                           <div class="d-flex align-items-center"><span class="nav-link-text">Loan Reports</span>
                           </div>
                         </a>
-                        <!-- more inner pages-->
-                      </li>
+                      </li> -->
                     </ul>
                   </div>
                 </div>
