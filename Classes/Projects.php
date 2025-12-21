@@ -42,6 +42,12 @@
             $stmt->execute();
             $stmt->close();
 
+            $query1 = "DELETE FROM tblprojects_payment WHERE project_id = ?";
+            $stmt1 = $this->conn->prepare($query1);
+            $stmt1->bind_param("i", $project_id);
+            $stmt1->execute();
+            $stmt1->close();
+
             return true;
         }
 
