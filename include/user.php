@@ -12,9 +12,10 @@
             $id = $_POST['user_id'];
             $username = $_POST['username'];
             $email = $_POST['email'];
+            $fullname = $_POST['fullname'];
 
             $user = new Users($conn);
-            if ($user->updateUser($id, $username, $email)) {
+            if ($user->updateUser($id, $username, $email, $fullname)) {
                 header('Location: ../admin/users.php?success=User updated successfully');
                 exit();
             } else {
@@ -40,6 +41,7 @@
         $email = $_POST['email'];
         $role = $_POST['role'];
         $profile_picture = $_FILES['profile_picture'];
+        $fullname = $_POST['fullname'];
             // Handle file upload
 
         $targetDir = "../uploads/profile_pictures/";
@@ -52,7 +54,7 @@
         move_uploaded_file($profile_picture["tmp_name"], $targetFilePath);
 
         $user = new Users($conn);
-        if ($user->createUser($username, $password, $email, $role, $targetFilePath)) {
+        if ($user->createUser($username, $password, $email, $role, $targetFilePath, $fullname)) {
             header('Location: ../admin/users.php?success=User added successfully');
             exit();
         } else {

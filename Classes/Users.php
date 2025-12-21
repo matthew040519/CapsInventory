@@ -15,9 +15,9 @@ class Users {
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function createUser($username, $password, $email, $role, $filename) {
-        $stmt = $this->db->prepare("INSERT INTO users (username, password, email, role, image) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $username, password_hash($password, PASSWORD_BCRYPT), $email, $role, $filename);
+    public function createUser($username, $password, $email, $role, $filename, $fullname) {
+        $stmt = $this->db->prepare("INSERT INTO users (username, password, email, role, image, fullname) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $username, password_hash($password, PASSWORD_BCRYPT), $email, $role, $filename, $fullname);
         return $stmt->execute();
     }
 
@@ -28,9 +28,9 @@ class Users {
         return $stmt->get_result()->fetch_assoc();
     }
 
-    public function updateUser($id, $username, $email) {
-        $stmt = $this->db->prepare("UPDATE users SET username = ?, email = ? WHERE id = ?");
-        $stmt->bind_param("ssi", $username, $email, $id);
+    public function updateUser($id, $username, $email, $fullname) {
+        $stmt = $this->db->prepare("UPDATE users SET username = ?, email = ?, fullname = ? WHERE id = ?");
+        $stmt->bind_param("sssi", $username, $email, $fullname, $id);
         return $stmt->execute();
     }
 

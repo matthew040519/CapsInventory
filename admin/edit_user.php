@@ -125,6 +125,10 @@ Login::requireLogin();
                                                 <input type="text" class="form-control" value="<?php echo $userData['username']; ?>" id="username" name="username" required>
                                             </div>
                                             <div class="mb-3">
+                                                <label for="fullname" class="form-label">Fullname</label>
+                                                <input type="text" class="form-control" value="<?php echo $userData['fullname']; ?>" id="fullname" name="fullname" required>
+                                            </div>
+                                            <div class="mb-3">
                                                 <label for="email" class="form-label">Email</label>
                                                 <input type="email" class="form-control" value="<?php echo $userData['email']; ?>" id="email" name="email" required>
                                             </div>

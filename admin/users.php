@@ -113,6 +113,10 @@ Login::requireLogin();
                                                 <input type="file" class="form-control" id="profile_picture" name="profile_picture" required>
                                             </div>
                                             <div class="mb-3">
+                                                <label for="fullname" class="form-label">Fullname</label>
+                                                <input type="text" class="form-control" id="fullname" name="fullname" required>
+                                            </div>
+                                            <div class="mb-3">
                                                 <label for="username" class="form-label">Username</label>
                                                 <input type="text" class="form-control" id="username" name="username" required>
                                             </div>
@@ -166,6 +170,7 @@ Login::requireLogin();
                               <tr>
                                 <th class="sort border-top border-translucent ps-3" data-sort="id">ID</th>
                                 <th class="sort border-top" data-sort="fullname">Username</th>
+                                <th class="sort border-top" data-sort="fullname">Fullname</th>
                                 <th class="sort border-top" data-sort="address">Email</th>
                                 <th class="sort border-top" data-sort="gender">Gender</th>
                                 <th class="sort text-end align-middle pe-0 border-top" scope="col"></th>
@@ -181,6 +186,7 @@ Login::requireLogin();
                               <tr>
                                 <td class="align-middle ps-3 id"><?php echo $user['id']; ?></td>
                                 <td class="align-middle fullname"><?php echo $user['username']; ?></td>
+                                <td class="align-middle fullname"><?php echo $user['fullname']; ?></td>
                                 <td class="align-middle address"><?php echo $user['email']; ?></td>
                                 <td class="align-middle gender"><?php echo $user['role'] == 1 ? 'Admin' : 'Cashier'; ?></td>
                                 <td class="align-middle text-end">
