@@ -97,6 +97,55 @@ Login::requireLogin();
                       ?>
 
          <div class="p-4 code-to-copy">
+          <?php
+            // Build print link with date filters if set
+            $print_link = 'print/inventory-report.php';
+            $query = [];
+            if (!empty($_GET['from_date'])) {
+              $query['from_date'] = urlencode($_GET['from_date']);
+            }
+            if (!empty($_GET['to_date'])) {
+              $query['to_date'] = urlencode($_GET['to_date']);
+            }
+            if ($query) {
+              $print_link .= '?' . http_build_query($query);
+            }
+          ?>
+          <a class="btn btn-primary mb-3" target="_blank" href="<?php echo $print_link; ?>">
+            <i class="fas fa-print"></i> Print Report
+          </a>
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12 col-lg-12">
+                        <form method="get" class="row g-3 mb-4">
+                          <div class="col-sm-5 col-md-5 col-lg-5">
+                          <label for="from_date" class="form-label mb-0">From:</label>
+                          <input type="date" class="form-control" id="from_date" name="from_date" value="<?php echo isset($_GET['from_date']) ? htmlspecialchars($_GET['from_date']) : ''; ?>">
+                          </div>
+                          <div class="col-sm-5 col-md-5 col-lg-5">
+                          <label for="to_date" class="form-label mb-0">To:</label>
+                          <input type="date" class="form-control" id="to_date" name="to_date" value="<?php echo isset($_GET['to_date']) ? htmlspecialchars($_GET['to_date']) : ''; ?>">
+                          </div>
+                          <div class="col-auto align-self-end">
+                          <button type="submit" class="btn btn-secondary">Filter</button>
+                          <a href="inventory-reports.php" class="btn btn-outline-secondary">Reset</a>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                    
+                    <?php
+                    // include('../Classes/ProductTransaction.php');
+                    // $product = new ProductTransaction($db->connect());
+
+                    // $from_date = isset($_GET['from_date']) ? $_GET['from_date'] : null;
+                    // $to_date = isset($_GET['to_date']) ? $_GET['to_date'] : null;
+
+                    // if ($from_date && $to_date) {
+                    //     $products = $product->getInventoryByDate($from_date, $to_date);
+                    // } else {
+                    //     $products = $product->getInventory();
+                    // }
+                    ?>
                       <div id="tableExample3" data-list='{"valueNames":["id","date","customer", "product", "price", "quantity_out", "total"],"page":10,"pagination":true}'>
                        
                         <div class="table-responsive">
@@ -113,7 +162,9 @@ Login::requireLogin();
                                 include('../Classes/ProductTransaction.php');
 
                                 $product = new ProductTransaction($db->connect());
-                                $products = $product->getInventory();
+                                  $from_date = isset($_GET['from_date']) ? $_GET['from_date'] : null;
+                                  $to_date = isset($_GET['to_date']) ? $_GET['to_date'] : null;
+                                $products = $product->getInventory($from_date, $to_date);
                                 foreach ($products as $product) { ?>
                               <tr>
                                 <td class="align-middle product_name"><?php echo $product['product_name']; ?></td>

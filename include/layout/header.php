@@ -200,7 +200,7 @@
                             </div>
                             <div class="flex-1 me-sm-3">
                               <h4 class="fs-9 text-body-emphasis">
-                                <?php echo $notification['fullname']; ?>
+                                <!-- <?php echo $notification['fullname']; ?> -->
                               </h4>
                               <p class="fs-9 text-body-highlight mb-2 mb-sm-3 fw-normal">
                                 <?php
@@ -223,7 +223,7 @@
                               </p>
                               <p class="text-body-secondary fs-9 mb-0">
                                 <span class="me-1 fas fa-clock"></span>
-                                <span class="fw-bold"><?php echo $notification['tdate']; ?></span>
+                                <span class="fw-bold"><?php echo $notification['tdate']; echo ' ' . $notification['time']; ?></span>
                               </p>
                             </div>
                           </div>

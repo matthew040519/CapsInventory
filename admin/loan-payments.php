@@ -84,7 +84,7 @@ Login::requireLogin();
         <div class="mb-9">
           <div class="row g-3 mb-4">
             <div class="col-auto">
-              <h2 class="mb-0">Loan Payments</h2>
+              <h2 class="mb-0">Account Receivable</h2>
             <p class="text-body-tertiary">Below is a list of recent loan payments, including order number, total amount, customer details, payment status, fulfilment status, delivery type, and date. Use the filters and search to find specific loan payments.</p>
             </div>
           </div>

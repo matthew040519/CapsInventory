@@ -84,7 +84,7 @@
                         <!-- more inner pages-->
                       </li>
                        <li class="nav-item"><a class="nav-link" href="loan-payments.php">
-                          <div class="d-flex align-items-center"><span class="nav-link-text">Loan Payments</span>
+                          <div class="d-flex align-items-center"><span class="nav-link-text">Account Receivable</span>
                           </div>
                         </a>
                       </li>

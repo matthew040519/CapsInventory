@@ -9,15 +9,24 @@
         }
 
         public function getAllNotifications() {
-            $stmt = $this->db->prepare("SELECT *, notifications.id as notification_id FROM notifications INNER JOIN tblcustomer ON notifications.customer_id = tblcustomer.id ORDER BY tdate DESC");
+            $stmt = $this->db->prepare("SELECT *, notifications.id as notification_id FROM notifications ORDER BY tdate DESC");
+            
             $stmt->execute();
-            return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $result = $stmt->get_result();
+            $notifications = [];
+            while ($row = $result->fetch_assoc()) {
+                $notifications[] = $row;
+            }
+            $stmt->close();
+            return $notifications;
         }
 
         public function addNotification($message, $user_id, $customer_id, $date, $module, $link) {
-            $queryNotif = "INSERT INTO notifications (message, tdate, user_id, customer_id, module, link) VALUES (?, ?, ?, ?, ?, ?)";
+            date_default_timezone_set('Asia/Manila');
+            $time = date('H:i:s');
+            $queryNotif = "INSERT INTO notifications (message, time, tdate, user_id, customer_id, module, link) VALUES (?, ?, ?, ?, ?, ?, ?)";
             $stmtNotif = $this->db->prepare($queryNotif);
-            $stmtNotif->bind_param("ssiiss", $message, $date, $user_id, $customer_id, $module, $link);
+            $stmtNotif->bind_param("sssiiss", $message, $time, $date, $user_id, $customer_id, $module, $link);
             $stmtNotif->execute();
         }
 
