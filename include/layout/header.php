@@ -6,12 +6,12 @@
             <a class="navbar-brand me-1 me-sm-3" href="index.html">
               <div class="d-flex align-items-center">
                 <div class="d-flex align-items-center"><img src="../src/logo.jpg" alt="phoenix" width="27" />
-                  <h5 class="logo-text ms-2 d-none d-sm-block">CAPS</h5>
+                  <h5 class="logo-text ms-2 d-none d-sm-block">JJ&C STAINLESS STEEL FABRICATION SERVICES INVENTORY AND SALES MANAGEMENT SYSTEM</h5>
                 </div>
               </div>
             </a>
           </div>
-          <div class="search-box navbar-top-search-box d-none d-lg-block" data-list='{"valueNames":["title"]}' style="width:25rem;">
+          <!-- <div class="search-box navbar-top-search-box d-none d-lg-block" data-list='{"valueNames":["title"]}' style="width:25rem;">
             <form class="position-relative" data-bs-toggle="search" data-bs-display="static">
               <input class="form-control search-input fuzzy-search rounded-pill form-control-sm" type="search" placeholder="Search..." aria-label="Search" />
               <span class="fas fa-search search-box-icon"></span>
@@ -142,7 +142,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <?php
                           require_once('../Classes/Notification.php');
                           require_once('../Classes/DB.php');
