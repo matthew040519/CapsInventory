@@ -106,6 +106,9 @@ Login::requireLogin();
                       ?>
 
          <div class="p-4 code-to-copy">
+          <a class="btn btn-primary mb-3" target="_blank" href="print/re-order-point-report.php">
+            <i class="fas fa-print"></i> Print Report
+                    </a>
                       <div id="tableExample3" data-list='{"valueNames":["id","date","customer", "product", "price", "quantity_out", "total"],"page":10,"pagination":true}'>
                        
                         <div class="table-responsive">

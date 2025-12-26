@@ -96,6 +96,11 @@ Login::requireLogin();
             <li class="nav-item"><a class="nav-link" href="#"><span>Refunded</span><span class="text-body-tertiary fw-semibold">(8)</span></a></li>
             <li class="nav-item"><a class="nav-link" href="#"><span>Failed</span><span class="text-body-tertiary fw-semibold">(2)</span></a></li>
           </ul> -->
+          <div class="d-flex justify-content-end mb-3">
+            <a class="btn btn-primary" target="_blank" href="print/loan-report.php">
+              <i class="fas fa-print"></i> Print Report
+            </a>
+          </div>
           <div id="orderTable" data-list='{"valueNames":["order","total","customer","payment_status","fulfilment_status","delivery_type","date"],"page":10,"pagination":true}'>
             <div class="mb-4">
               <div class="row g-3">
@@ -116,13 +121,6 @@ Login::requireLogin();
                  <table class="table table-sm fs-9 mb-0">
                   <thead>
                     <tr>
-                      <!-- <th class="white-space-nowrap fs-9 align-middle ps-0" style="width:26px;">
-                        <div class="form-check mb-0 fs-8">
-                          <input class="form-check-input" id="checkbox-bulk-order-select" type="checkbox" data-bulk-select='{"body":"order-table-body"}' />
-                        </div>
-                      </th> -->
-                      <!-- <th class="sort white-space-nowrap align-middle pe-3" scope="col" data-sort="order" style="width:5%;">ORDER</th> -->
-                      
                       <th class="sort align-middle" scope="col" data-sort="customer">CUSTOMER</th>
                        <th class="sort align-middle" scope="col" data-sort="project">PROJECT</th>
                       <th class="sort align-middle pe-0" scope="col" data-sort="date">DATE</th>
@@ -140,9 +138,6 @@ Login::requireLogin();
                     ?>
                     <tr class="hover-actions-trigger btn-reveal-trigger position-static">
                       <td class="customer align-middle white-space-nowrap text-body-tertiary"><a class="d-flex align-items-center text-body" href="../../../apps/e-commerce/landing/profile.html">
-                          <!-- <div class="avatar avatar-m">
-                            <img class="rounded-circle" src="../../../assets/img/team/32.webp" alt="" />
-                          </div> -->
                           <h6 class="mb-0 text-body"><?php echo $loanProject['fullname']; ?></h6>
                         </a></td>
                          <td class="date align-middle white-space-nowrap text-body-tertiary"><?php echo $loanProject['project_name']; ?></td>

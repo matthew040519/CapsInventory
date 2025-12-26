@@ -191,12 +191,15 @@ ORDER BY tblproduct_transactions.date DESC";
             return $stmt->get_result();
         }
 
-        public function getInventory()
+        public function getInventory($from_date = null, $to_date = null)
         {
             $query = "SELECT tblproducts.product_name, SUM(quantity_in - quantity_out) AS inventory FROM tblproduct_transactions
-JOIN tblproducts ON tblproducts.id=tblproduct_transactions.product_id
+JOIN tblproducts ON tblproducts.id=tblproduct_transactions.product_id 
+WHERE (? IS NULL OR ? IS NULL OR date BETWEEN ? AND ?)
 GROUP BY product_id, product_name";
+
             $stmt = $this->conn->prepare($query);
+            $stmt->bind_param("ssss", $from_date, $to_date, $from_date, $to_date);
             $stmt->execute();
             return $stmt->get_result();
         }
